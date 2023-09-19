@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Project setup
 ~~~
 npm install --global yarn
-npx create-next-app@12.3.3 kusa-log --typescript
+npx create-next-app@13.3 kusa-log --typescript
 ~~~
 ~~~
 yarn add next@12.3.3

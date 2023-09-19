@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    /*デフォルトの文字間や行間だと、日本語では窮屈に見えてしまうため*/
+    body {
+        @apply leading-relaxed tracking-wider;
+    }
+}
+
+
