@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (user && pathname === '/') {
       push('/dashboard')
     } else if (!user && pathname !== '/') {
-      await push('/')
+      push('/')
     }
   }
 

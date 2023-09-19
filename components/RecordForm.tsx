@@ -115,7 +115,6 @@ export const RecordForm: FC = () => {
           }
         />
       </div>
-      <Button>サンプル</Button>
       <button
         type="submit"
         className="ml-2 rounded bg-lime-600 px-3 py-2 text-sm font-medium text-white hover:bg-lime-700"
