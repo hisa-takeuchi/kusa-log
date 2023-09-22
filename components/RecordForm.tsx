@@ -1,26 +1,35 @@
-import { FormEvent, FC } from 'react'
-import { supabase } from '../utils/supabase'
+import { FC } from 'react'
 import useStore from '../store'
 import { useMutateRecord } from '../hooks/useMutateRecord'
-import { MyPlant } from '../types/types'
 import { useQueryMyPlants } from '../hooks/useQueryMyPlants'
-import { Button, Checkbox, Input, Spacer } from '@nextui-org/react'
-import { BeakerIcon } from '@heroicons/react/solid'
+import {
+  Accordion,
+  AccordionItem,
+  Checkbox,
+  CheckboxGroup,
+  Input,
+  Radio,
+  RadioGroup,
+  Spacer,
+  Textarea,
+} from '@nextui-org/react'
+import dayjs from 'dayjs'
 
 export const RecordForm: FC = () => {
   const { editedRecord } = useStore()
   const update = useStore((state) => state.updateEditedRecord)
-  const { createRecordMutation, updateRecordMutation } = useMutateRecord()
   const { data: myPlants, status } = useQueryMyPlants()
+
   return (
     <div className="mb-3">
       <Input
+        isRequired
         autoFocus
         label="日付"
         type="date"
         placeholder="Enter your email"
         variant="bordered"
-        value={editedRecord.record_date}
+        defaultValue={editedRecord.record_date}
         onChange={(e) =>
           update({ ...editedRecord, record_date: e.target.value })
         }
@@ -49,7 +58,6 @@ export const RecordForm: FC = () => {
           onChange={(e) =>
             update({ ...editedRecord, is_fertilizer: e.target.checked })
           }
-          icon={<BeakerIcon color="default" className="h-4" />}
         >
           肥料
         </Checkbox>
@@ -64,26 +72,110 @@ export const RecordForm: FC = () => {
           onChange={(e) =>
             update({ ...editedRecord, is_chemical: e.target.checked })
           }
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 12.75c1.148 0 2.278.08 3.383.237 1.037.146 1.866.966 1.866 2.013 0 3.728-2.35 6.75-5.25 6.75S6.75 18.728 6.75 15c0-1.046.83-1.867 1.866-2.013A24.204 24.204 0 0112 12.75zm0 0c2.883 0 5.647.508 8.207 1.44a23.91 23.91 0 01-1.152 6.06M12 12.75c-2.883 0-5.647.508-8.208 1.44.125 2.104.52 4.136 1.153 6.06M12 12.75a2.25 2.25 0 002.248-2.354M12 12.75a2.25 2.25 0 01-2.248-2.354M12 8.25c.995 0 1.971-.08 2.922-.236.403-.066.74-.358.795-.762a3.778 3.778 0 00-.399-2.25M12 8.25c-.995 0-1.97-.08-2.922-.236-.402-.066-.74-.358-.795-.762a3.734 3.734 0 01.4-2.253M12 8.25a2.25 2.25 0 00-2.248 2.146M12 8.25a2.25 2.25 0 012.248 2.146M8.683 5a6.032 6.032 0 01-1.155-1.002c.07-.63.27-1.222.574-1.747m.581 2.749A3.75 3.75 0 0115.318 5m0 0c.427-.283.815-.62 1.155-.999a4.471 4.471 0 00-.575-1.752M4.921 6a24.048 24.048 0 00-.392 3.314c1.668.546 3.416.914 5.223 1.082M19.08 6c.205 1.08.337 2.187.392 3.314a23.882 23.882 0 01-5.223 1.082"
-              />
-            </svg>
-          }
         >
           殺虫・殺菌
         </Checkbox>
       </div>
+      <Spacer y={4} />
+      <Accordion isCompact>
+        <AccordionItem className="tex" title="もっと詳細に記録する">
+          <div className="flex justify-between px-1 py-2">
+            <RadioGroup
+              className="gap-unit-1"
+              label="コンディション"
+              orientation="horizontal"
+              defaultValue={editedRecord.condition}
+              onChange={(e) =>
+                update({ ...editedRecord, condition: e.target.value })
+              }
+            >
+              <Radio value="1">Good</Radio>
+              <Radio value="2">Bad</Radio>
+              <Radio value="3">Danger</Radio>
+            </RadioGroup>
+          </div>
+          <Spacer y={4} />
+          <div className="flex justify-between px-1 py-2">
+            <CheckboxGroup
+              className="gap-unit-1"
+              label="天気"
+              value={editedRecord.weather}
+              orientation="horizontal"
+              onValueChange={(val) => {
+                if (val.length > 1) return
+                update({ ...editedRecord, weather: val })
+              }}
+            >
+              <Checkbox value="1">晴れ</Checkbox>
+              <Checkbox value="2">雨</Checkbox>
+              <Checkbox value="3">くもり</Checkbox>
+              <Checkbox value="4">雪</Checkbox>
+            </CheckboxGroup>
+          </div>
+          <Spacer y={4} />
+          <div className="flex justify-between px-1 py-2">
+            <CheckboxGroup
+              className="gap-unit-1"
+              label="風の強さ"
+              value={editedRecord.wind_power}
+              orientation="horizontal"
+              onValueChange={(val) => {
+                if (val.length > 1) return
+                update({ ...editedRecord, wind_power: val })
+              }}
+            >
+              <Checkbox value="1">弱</Checkbox>
+              <Checkbox value="2">普通</Checkbox>
+              <Checkbox value="3">強</Checkbox>
+            </CheckboxGroup>
+          </div>
+          <Spacer y={4} />
+          <div className="flex justify-between px-1 py-2">
+            <Input
+              labelPlacement="outside"
+              radius="sm"
+              label="光量"
+              placeholder="5万ルクス"
+              autoFocus
+              variant="bordered"
+              value={editedRecord.light_power}
+              onChange={(e) =>
+                update({ ...editedRecord, light_power: e.target.value })
+              }
+            />
+          </div>
+          <Spacer y={4} />
+          <div className="flex justify-between px-1 py-2">
+            <Input
+              labelPlacement="outside"
+              radius="sm"
+              label="温度"
+              placeholder="25℃"
+              autoFocus
+              variant="bordered"
+              value={editedRecord.temp}
+              onChange={(e) =>
+                update({ ...editedRecord, temp: e.target.value })
+              }
+            />
+          </div>
+          <Spacer y={4} />
+          <div className="flex justify-between px-1 py-2">
+            <Textarea
+              labelPlacement="outside"
+              radius="sm"
+              label="メモ"
+              placeholder="新芽が出た"
+              autoFocus
+              variant="bordered"
+              value={editedRecord.memo}
+              onChange={(e) =>
+                update({ ...editedRecord, memo: e.target.value })
+              }
+            />
+          </div>
+        </AccordionItem>
+      </Accordion>
     </div>
   )
 }

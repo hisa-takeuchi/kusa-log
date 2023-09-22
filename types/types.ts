@@ -7,6 +7,12 @@ export type Record = {
   is_chemical: boolean
   record_date: string
   user_id: string | undefined
+  light_power: string | undefined
+  weather: string[] | undefined
+  wind_power: string[] | undefined
+  memo: string | undefined
+  temp: string | undefined
+  condition: string | undefined
 }
 
 export type MyPlant = {

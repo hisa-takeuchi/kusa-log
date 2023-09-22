@@ -1,5 +1,9 @@
 import create from 'zustand'
 import { EditedRecord, EditedMyPlant } from './types/types'
+import dayjs from 'dayjs'
+
+const date = new Date()
+const formattedDate = dayjs(date).format('YYYY-MM-DD')
 
 type State = {
   editedRecord: EditedRecord
@@ -17,7 +21,13 @@ const useStore = create<State>((set) => ({
     is_water: false,
     is_fertilizer: false,
     is_chemical: false,
-    record_date: '',
+    record_date: formattedDate,
+    light_power: '',
+    weather: [],
+    wind_power: [],
+    memo: '',
+    temp: '',
+    condition: '',
   },
   editedMyPlant: {
     id: '',
@@ -36,6 +46,12 @@ const useStore = create<State>((set) => ({
         is_fertilizer: payload.is_fertilizer,
         is_chemical: payload.is_chemical,
         record_date: payload.record_date,
+        light_power: payload.light_power,
+        weather: payload.weather,
+        wind_power: payload.wind_power,
+        memo: payload.memo,
+        temp: payload.temp,
+        condition: payload.condition,
       },
     }),
   updateEditedMyPlant: (payload: EditedMyPlant) =>
@@ -57,7 +73,13 @@ const useStore = create<State>((set) => ({
         is_water: false,
         is_fertilizer: false,
         is_chemical: false,
-        record_date: '',
+        record_date: formattedDate,
+        light_power: '',
+        weather: [],
+        wind_power: [],
+        memo: '',
+        temp: '',
+        condition: '',
       },
     }),
   resetEditedMyPlant: () =>

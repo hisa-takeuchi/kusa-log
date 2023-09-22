@@ -1,9 +1,8 @@
-import { FC, FormEvent, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { MyPlant } from '../types/types'
 import useStore from '../store'
 import { useMutateMyPlants } from '../hooks/useMutateMyPlant'
 import { supabase } from '../utils/supabase'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import {
   Card,
   CardBody,
@@ -14,8 +13,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  Input,
-  Checkbox,
   ModalFooter,
   Button,
 } from '@nextui-org/react'
@@ -41,27 +38,45 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { editedRecord } = useStore()
   const { createRecordMutation, updateRecordMutation } = useMutateRecord()
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false)
   const submitHandler = () => {
-    if (editedRecord.id === '') {
-      createRecordMutation.mutate({
-        user_id: supabase.auth.user()?.id,
-        plant_id: id,
-        is_water: editedRecord.is_water,
-        is_fertilizer: editedRecord.is_fertilizer,
-        is_chemical: editedRecord.is_chemical,
-        record_date: editedRecord.record_date,
-      })
-    } else {
-      updateRecordMutation.mutate({
-        id: editedRecord.id,
-        plant_id: editedRecord.plant_id,
-        is_water: editedRecord.is_water,
-        is_fertilizer: editedRecord.is_fertilizer,
-        is_chemical: editedRecord.is_chemical,
-        record_date: editedRecord.record_date,
-      })
-    }
-    onOpenChange()
+    // 2秒止める
+    setIsSubmitLoading(true)
+    setTimeout(() => {
+      if (editedRecord.id === '') {
+        createRecordMutation.mutate({
+          user_id: supabase.auth.user()?.id,
+          plant_id: id,
+          is_water: editedRecord.is_water,
+          is_fertilizer: editedRecord.is_fertilizer,
+          is_chemical: editedRecord.is_chemical,
+          record_date: editedRecord.record_date,
+          light_power: editedRecord.light_power,
+          weather: editedRecord.weather,
+          wind_power: editedRecord.wind_power,
+          memo: editedRecord.memo,
+          temp: editedRecord.temp,
+          condition: editedRecord.condition,
+        })
+      } else {
+        updateRecordMutation.mutate({
+          id: editedRecord.id,
+          plant_id: editedRecord.plant_id,
+          is_water: editedRecord.is_water,
+          is_fertilizer: editedRecord.is_fertilizer,
+          is_chemical: editedRecord.is_chemical,
+          record_date: editedRecord.record_date,
+          light_power: editedRecord.light_power,
+          weather: editedRecord.weather,
+          wind_power: editedRecord.wind_power,
+          memo: editedRecord.memo,
+          temp: editedRecord.temp,
+          condition: editedRecord.condition,
+        })
+      }
+      setIsSubmitLoading(false)
+      onOpenChange()
+    }, 2000)
   }
 
   return (
@@ -82,7 +97,12 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
           <p className="text-default-500">{records[0]?.record_date}</p>
         </CardFooter>
       </Card>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom">
+      <Modal
+        scrollBehavior="inside"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="bottom"
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -95,6 +115,8 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
                   className="text-white"
                   color="success"
                   onPress={submitHandler}
+                  isLoading={isSubmitLoading}
+                  isDisabled={editedRecord.record_date === ''}
                 >
                   記録する
                 </Button>
