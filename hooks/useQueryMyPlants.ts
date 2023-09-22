@@ -5,7 +5,7 @@ export const useQueryMyPlants = () => {
   const getMyPlants = async () => {
     const { data, error } = await supabase
       .from('my_plants')
-      .select('*')
+      .select('*, records(*)')
       .order('created_at', { ascending: false })
       .eq('user_id', supabase.auth.user()?.id)
     if (error) {

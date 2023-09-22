@@ -7,7 +7,7 @@ export const useMutateMyPlants = () => {
   const queryClient = useQueryClient()
   const reset = useStore((state) => state.resetEditedMyPlant)
   const createMyPlantMutation = useMutation(
-    async (myPlant: Omit<MyPlant, 'id' | 'created_at'>) => {
+    async (myPlant: Omit<MyPlant, 'id' | 'created_at' | 'records'>) => {
       const { data, error } = await supabase.from('my_plants').insert(myPlant)
 
       if (error) throw new Error(error.message)

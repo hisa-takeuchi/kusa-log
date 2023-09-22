@@ -17,5 +17,6 @@ export const useQueryRecords = () => {
     queryKey: ['records'],
     queryFn: getRecords,
     staleTime: 0,
+    refetchOnWindowFocus: true,
   })
 }

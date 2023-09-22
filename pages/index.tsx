@@ -1,8 +1,13 @@
 import { useState, FormEvent } from 'react'
-import { BadgeCheckIcon, ShieldCheckIcon } from '@heroicons/react/solid'
+import {
+  BadgeCheckIcon,
+  LoginIcon,
+  ShieldCheckIcon,
+} from '@heroicons/react/solid'
 import type { NextPage } from 'next'
 import { useMutateAuth } from '../hooks/useMutateAuth'
 import { Layout } from '../components/Layout'
+import { Input, Spacer, Button, Link } from '@nextui-org/react'
 
 const Auth: NextPage = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -24,47 +29,49 @@ const Auth: NextPage = () => {
   }
   return (
     <Layout title={isLogin ? 'ログイン' : '新規登録'}>
-      <ShieldCheckIcon className="mb-6 h-12 w-12 text-green-500" />
+      <h2 className="font-bold">ログイン</h2>
+      <Spacer y={5} />
       <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            required
-            className="my-2 rounded border border-gray-300 px-3 py-2 text-sm placeholder-gray-500 focus:border-lime-500 focus:outline-none"
-            placeholder="メールアドレス"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            required
-            className="my-2 rounded border border-gray-300 px-3 py-2 text-sm placeholder-gray-500 focus:border-lime-500 focus:outline-none"
-            placeholder="パスワード"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button
+        <Input
+          variant="bordered"
+          size="lg"
+          type="text"
+          label="メールアドレス"
+          placeholder=""
+          value={email}
+          radius="sm"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Spacer y={5} />
+        <Input
+          variant="bordered"
+          size="lg"
+          type="password"
+          label="パスワード"
+          value={password}
+          radius="sm"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Spacer y={10} />
+        <Button
+          className="w-full text-white"
+          color="success"
           type="submit"
-          className="group relative flex w-full justify-center rounded-md bg-lime-600 py-2 px-4 text-sm font-medium text-white hover:bg-lime-700"
+          size="lg"
+          endContent={<LoginIcon className="h-4" color="white" />}
+          radius="sm"
         >
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <BadgeCheckIcon className="h-5 w-5" aria-hidden="true" />
-          </span>
           {isLogin ? 'ログインする' : '新規登録する'}
-        </button>
-        <div className="my-6 flex items-center justify-center text-sm">
-          <span
-            onClick={() => setIsLogin(!isLogin)}
-            className="cursor-pointer font-medium hover:text-lime-500"
-          >
-            {isLogin
-              ? '新規登録はこちら'
-              : '既にアカウントをお持ちの方はこちら'}
-          </span>
-        </div>
+        </Button>
+        <Spacer y={5} />
+        <Link
+          size="sm"
+          underline="hover"
+          className="block cursor-pointer text-center hover:text-green-500"
+          onClick={() => setIsLogin(!isLogin)}
+        >
+          {isLogin ? '新規登録はこちら' : '既にアカウントをお持ちの方はこちら'}
+        </Link>
       </form>
     </Layout>
   )

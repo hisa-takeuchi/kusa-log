@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +7,7 @@
 @layer base {
     /*デフォルトの文字間や行間だと、日本語では窮屈に見えてしまうため*/
     body {
-        @apply leading-relaxed tracking-wider;
+        @apply leading-relaxed tracking-wider font-sans;
     }
 }
 

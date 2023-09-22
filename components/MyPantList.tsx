@@ -8,7 +8,7 @@ export const MyPantList: FC = () => {
   if (status === 'loading') return <Spinner />
   if (status === 'error') return <p>{'エラー'}</p>
   return (
-    <ul className="my-2">
+    <ul className="grid grid-cols-2 gap-unit-sm md:grid-cols-3 md:gap-unit-lg">
       {myPlants?.map((plant) => <MyPlantItem key={plant.id} {...plant} />)}
     </ul>
   )

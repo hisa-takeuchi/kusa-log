@@ -4,123 +4,86 @@ import useStore from '../store'
 import { useMutateRecord } from '../hooks/useMutateRecord'
 import { MyPlant } from '../types/types'
 import { useQueryMyPlants } from '../hooks/useQueryMyPlants'
-import { Button } from '@nextui-org/react'
+import { Button, Checkbox, Input, Spacer } from '@nextui-org/react'
+import { BeakerIcon } from '@heroicons/react/solid'
 
 export const RecordForm: FC = () => {
   const { editedRecord } = useStore()
   const update = useStore((state) => state.updateEditedRecord)
   const { createRecordMutation, updateRecordMutation } = useMutateRecord()
   const { data: myPlants, status } = useQueryMyPlants()
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (editedRecord.id === '') {
-      createRecordMutation.mutate({
-        user_id: supabase.auth.user()?.id,
-        plant_id: editedRecord.plant_id,
-        is_water: editedRecord.is_water,
-        is_fertilizer: editedRecord.is_fertilizer,
-        is_chemical: editedRecord.is_chemical,
-        record_date: editedRecord.record_date,
-      })
-    } else {
-      updateRecordMutation.mutate({
-        id: editedRecord.id,
-        plant_id: editedRecord.plant_id,
-        is_water: editedRecord.is_water,
-        is_fertilizer: editedRecord.is_fertilizer,
-        is_chemical: editedRecord.is_chemical,
-        record_date: editedRecord.record_date,
-      })
-    }
-  }
   return (
-    <form onSubmit={submitHandler}>
-      <div className="mb-3">
-        <label htmlFor="plant_id" className="form-label">
-          お世話した草
-        </label>
-        <select
-          className="rounded border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-500 focus:border-lime-500 focus:outline-none"
-          aria-label="Default select example"
-          id="plant_id"
-          value={editedRecord.plant_id}
-          onChange={(e) => {
-            update({
-              ...editedRecord,
-              plant_id: e.target.value,
-            })
+    <div className="mb-3">
+      <Input
+        autoFocus
+        label="日付"
+        type="date"
+        placeholder="Enter your email"
+        variant="bordered"
+        value={editedRecord.record_date}
+        onChange={(e) =>
+          update({ ...editedRecord, record_date: e.target.value })
+        }
+      />
+      <Spacer y={4} />
+      <div className="flex justify-between px-1 py-2">
+        <Checkbox
+          size="lg"
+          classNames={{
+            label: 'text-small',
           }}
-        >
-          <option value="">選択する</option>
-          {myPlants?.map((plant: MyPlant) => (
-            <option key={plant.id} value={plant.id}>
-              {plant.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="mb-3">
-        <label htmlFor="record_date" className="form-label">
-          日付
-        </label>
-        <input
-          type="date"
-          id="record_date"
-          className="rounded border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-500 focus:border-lime-500 focus:outline-none"
-          value={editedRecord.record_date}
-          onChange={(e) =>
-            update({ ...editedRecord, record_date: e.target.value })
-          }
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="is_water" className="form-label">
-          水やり
-        </label>
-        <input
-          className="rounded border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-500 focus:border-lime-500 focus:outline-none"
-          id="is_water"
-          type="checkbox"
           checked={editedRecord.is_water}
           onChange={(e) =>
             update({ ...editedRecord, is_water: e.target.checked })
           }
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="is_fertilizer" className="form-label">
-          肥料
-        </label>
-        <input
-          className="rounded border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-500 focus:border-lime-500 focus:outline-none"
-          id="is_fertilizer"
-          type="checkbox"
+        >
+          みずやり
+        </Checkbox>
+
+        <Checkbox
+          size="lg"
+          classNames={{
+            label: 'text-small',
+          }}
           checked={editedRecord.is_fertilizer}
           onChange={(e) =>
             update({ ...editedRecord, is_fertilizer: e.target.checked })
           }
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="is_chemical" className="form-label">
-          殺虫・殺菌
-        </label>
-        <input
-          className="rounded border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-500 focus:border-lime-500 focus:outline-none"
-          id="is_chemical"
-          type="checkbox"
+          icon={<BeakerIcon color="default" className="h-4" />}
+        >
+          肥料
+        </Checkbox>
+
+        <Checkbox
+          size="lg"
+          name="殺虫・殺菌"
+          classNames={{
+            label: 'text-small',
+          }}
           checked={editedRecord.is_chemical}
           onChange={(e) =>
             update({ ...editedRecord, is_chemical: e.target.checked })
           }
-        />
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 12.75c1.148 0 2.278.08 3.383.237 1.037.146 1.866.966 1.866 2.013 0 3.728-2.35 6.75-5.25 6.75S6.75 18.728 6.75 15c0-1.046.83-1.867 1.866-2.013A24.204 24.204 0 0112 12.75zm0 0c2.883 0 5.647.508 8.207 1.44a23.91 23.91 0 01-1.152 6.06M12 12.75c-2.883 0-5.647.508-8.208 1.44.125 2.104.52 4.136 1.153 6.06M12 12.75a2.25 2.25 0 002.248-2.354M12 12.75a2.25 2.25 0 01-2.248-2.354M12 8.25c.995 0 1.971-.08 2.922-.236.403-.066.74-.358.795-.762a3.778 3.778 0 00-.399-2.25M12 8.25c-.995 0-1.97-.08-2.922-.236-.402-.066-.74-.358-.795-.762a3.734 3.734 0 01.4-2.253M12 8.25a2.25 2.25 0 00-2.248 2.146M12 8.25a2.25 2.25 0 012.248 2.146M8.683 5a6.032 6.032 0 01-1.155-1.002c.07-.63.27-1.222.574-1.747m.581 2.749A3.75 3.75 0 0115.318 5m0 0c.427-.283.815-.62 1.155-.999a4.471 4.471 0 00-.575-1.752M4.921 6a24.048 24.048 0 00-.392 3.314c1.668.546 3.416.914 5.223 1.082M19.08 6c.205 1.08.337 2.187.392 3.314a23.882 23.882 0 01-5.223 1.082"
+              />
+            </svg>
+          }
+        >
+          殺虫・殺菌
+        </Checkbox>
       </div>
-      <button
-        type="submit"
-        className="ml-2 rounded bg-lime-600 px-3 py-2 text-sm font-medium text-white hover:bg-lime-700"
-      >
-        {editedRecord.id ? '修正する' : '記録する'}
-      </button>
-    </form>
+    </div>
   )
 }

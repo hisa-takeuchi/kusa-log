@@ -8,7 +8,7 @@ type Title = {
 }
 export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
   return (
-    <div className="flex min-h-screen flex-col items-center font-mono text-gray-800">
+    <div className="flex min-h-screen flex-col items-center text-gray-800">
       <Head>
         <title>{title}</title>
       </Head>

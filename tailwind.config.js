@@ -12,7 +12,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      // ja: [...defaultTheme.fontFamily.sans],
+      sans: ['Noto Sans JP', 'sans-serif'],
       // en: [...defaultTheme.fontFamily.sans],
     },
     extend: {
@@ -27,16 +27,16 @@ module.exports = {
         primary: {
           // light: '',
           // medium: '',
-          // DEFAULT: '#242424',
+          DEFAULT: 'green',
           // dark: '',
         },
         // サブカラー
-        // secondary: {
-        //   light: '',
-        //   medium: '',
-        //   DEFAULT: '',
-        //   dark: '',
-        // },
+        secondary: {
+          light: '',
+          medium: '',
+          DEFAULT: 'yellow',
+          dark: '',
+        },
         // アクセントカラー
         // accent: {
         //   light: '',

@@ -17,13 +17,14 @@ export const useMutateRecord = () => {
     {
       onSuccess: (res) => {
         const previousRecords = queryClient.getQueryData<Record[]>(['records'])
+
         if (previousRecords) {
           queryClient.setQueryData(['records'], [...previousRecords, res[0]])
         }
         reset()
       },
       onError: (err: any) => {
-        alert(err.message)
+        console.log(err.message)
         reset()
       },
     },
@@ -58,7 +59,7 @@ export const useMutateRecord = () => {
         reset()
       },
       onError: (err: any) => {
-        alert(err.message)
+        console.log(err.message)
         reset()
       },
     },
@@ -86,7 +87,7 @@ export const useMutateRecord = () => {
         reset()
       },
       onError: (err: any) => {
-        alert(err.message)
+        console.log(err.message)
         reset()
       },
     },
