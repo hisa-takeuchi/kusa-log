@@ -24,7 +24,6 @@ export const RecordForm: FC = () => {
     <div className="mb-3">
       <Input
         isRequired
-        autoFocus
         label="日付"
         type="date"
         placeholder="Enter your email"
@@ -136,7 +135,6 @@ export const RecordForm: FC = () => {
               radius="sm"
               label="光量"
               placeholder="5万ルクス"
-              autoFocus
               variant="bordered"
               value={editedRecord.light_power}
               onChange={(e) =>
@@ -151,7 +149,6 @@ export const RecordForm: FC = () => {
               radius="sm"
               label="温度"
               placeholder="25℃"
-              autoFocus
               variant="bordered"
               value={editedRecord.temp}
               onChange={(e) =>
@@ -166,7 +163,6 @@ export const RecordForm: FC = () => {
               radius="sm"
               label="メモ"
               placeholder="新芽が出た"
-              autoFocus
               variant="bordered"
               value={editedRecord.memo}
               onChange={(e) =>
