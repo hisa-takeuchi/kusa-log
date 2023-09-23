@@ -87,7 +87,11 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   return (
     <>
       <Tooltip
-        onOpenChange={(open) => setIsShowTooltip(open)}
+        onOpenChange={(open) => {
+          if (isShowTooltip) {
+            setIsShowTooltip(open)
+          }
+        }}
         showArrow
         isOpen={isShowTooltip}
         content="完了！"
