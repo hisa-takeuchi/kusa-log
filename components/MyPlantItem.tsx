@@ -15,6 +15,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Tooltip,
 } from '@nextui-org/react'
 import { RecordForm } from './RecordForm'
 import { useMutateRecord } from '../hooks/useMutateRecord'
@@ -39,9 +40,12 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   const { editedRecord } = useStore()
   const { createRecordMutation, updateRecordMutation } = useMutateRecord()
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
+  const [isShowTooltip, setIsShowTooltip] = useState(false)
   const submitHandler = () => {
     // 2秒止める
     setIsSubmitLoading(true)
+
+    // TODO: promise 使用する
     setTimeout(() => {
       if (editedRecord.id === '') {
         createRecordMutation.mutate({
@@ -75,33 +79,46 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
         })
       }
       setIsSubmitLoading(false)
+      setIsShowTooltip(true)
       onOpenChange()
     }, 2000)
   }
 
   return (
     <>
-      <Card isPressable onPress={onOpen}>
-        <CardBody className="overflow-visible p-0">
-          <Image
-            shadow="sm"
-            width={300}
-            height={200}
-            alt={name}
-            className="h-[140px] w-full object-cover"
-            src="https://app.requestly.io/delay/5000/https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-          />
-        </CardBody>
-        <CardFooter className="flex-col justify-between gap-unit-1 text-small">
-          <b>{name}</b>
-          <p className="text-default-500">{records[0]?.record_date}</p>
-        </CardFooter>
-      </Card>
+      <Tooltip
+        onOpenChange={(open) => setIsShowTooltip(open)}
+        showArrow
+        isOpen={isShowTooltip}
+        content="完了！"
+        color="success"
+        placement="top"
+        radius="sm"
+        className="text-white"
+      >
+        <Card isPressable onPress={onOpen}>
+          <CardBody className="overflow-visible p-0">
+            <Image
+              shadow="sm"
+              width={300}
+              height={200}
+              alt={name}
+              className="h-[140px] w-full object-cover"
+              src="https://app.requestly.io/delay/5000/https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+            />
+          </CardBody>
+          <CardFooter className="flex-col justify-between gap-unit-1 text-small">
+            <b>{name}</b>
+            <p className="text-default-500">{records[0]?.record_date}</p>
+          </CardFooter>
+        </Card>
+      </Tooltip>
       <Modal
         scrollBehavior="inside"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="bottom"
+        isDismissable={!isSubmitLoading}
       >
         <ModalContent>
           {(onClose) => (
