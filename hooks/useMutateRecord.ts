@@ -7,7 +7,7 @@ export const useMutateRecord = () => {
   const queryClient = useQueryClient()
   const reset = useStore((state) => state.resetEditedRecord)
   const createRecordMutation = useMutation(
-    async (record: Omit<Record, 'id' | 'created_at'>) => {
+    async (record: Omit<Record, 'id' | 'created_at' | 'my_plants'>) => {
       const { data, error } = await supabase.from('records').insert(record)
 
       if (error) throw new Error(error.message)

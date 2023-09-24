@@ -29,7 +29,7 @@ const Auth: NextPage = () => {
   }
   return (
     <Layout title={isLogin ? 'ログイン' : '新規登録'}>
-      <h2 className="font-bold">ログイン</h2>
+      <h2 className="font-bold">{isLogin ? 'ログイン' : '新規登録'}</h2>
       <Spacer y={5} />
       <form onSubmit={handleSubmit}>
         <Input
