@@ -12,3 +12,42 @@
 }
 
 
+/* カレンダーのCSS */
+.fc .fc-scrollgrid {
+    border-width: 0 0 0 0; /* 外側の枠線消す */
+    font-size: 20px;
+    font-weight: normal;
+}
+.fc-theme-standard td, .fc-theme-standard th {
+    height: 60px;
+    border: none;
+    padding: 0 5px 5px;
+}
+/*　今日の背景 */
+.fc .fc-daygrid-day.fc-day-today {
+    @apply bg-yellow-100
+}
+/*!* 日付を枠の高さいっぱいに *!*/
+/*.fc .fc-daygrid-day-frame {*/
+/*    height: 100%;*/
+/*}*/
+/* 日付を枠の中心に */
+.fc .fc-daygrid-day-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100%;
+}
+.fc .fc-daygrid-dot-event {
+    justify-content: center;
+}
+.fc .fc-toolbar-title {
+    font-size: 1rem;
+}
+.fc .fc-scrollgrid {
+    font-size: 1rem;
+}
+.fc .fc-theme-standard td, .fc-theme-standard th {
+    height: 30px;
+}

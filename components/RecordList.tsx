@@ -7,11 +7,9 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 
 export const RecordList: FC = () => {
   const { data: records, status } = useQueryRecords()
-  const { data: record_dates } = useQueryDistinctRecordDate()
   if (status === 'loading') return <LoadingSpinner />
   // TODO:エラー用のTooltipを追加する
   if (status === 'error') return <p>{'エラー'}</p>
-  console.log(record_dates)
   return (
     <Accordion>
       {records!.map((record) => (
