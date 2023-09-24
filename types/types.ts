@@ -13,6 +13,7 @@ export type Record = {
   memo: string | undefined
   temp: string | undefined
   condition: string | undefined
+  my_plants: MyPlant
 }
 
 export type MyPlant = {
@@ -26,5 +27,5 @@ export type MyPlant = {
   replanted_date: string | null
   records: Record[]
 }
-export type EditedRecord = Omit<Record, 'created_at' | 'user_id'>
+export type EditedRecord = Omit<Record, 'created_at' | 'user_id' | 'my_plants'>
 export type EditedMyPlant = Omit<MyPlant, 'created_at' | 'user_id' | 'records'>
