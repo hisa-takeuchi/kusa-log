@@ -39,7 +39,7 @@ export const RecordCalendar = () => {
         center: 'title',
         end: 'prev,next',
       }}
-      contentHeight="400px"
+      contentHeight="480px"
       dayCellContent={(e) => e.dayNumberText.replace('日', '')}
       eventContent={(arg: EventContentArg) => EventComponent(arg.event.title)}
     />
