@@ -77,7 +77,7 @@ export const RecordForm: FC = () => {
       </div>
       <Spacer y={4} />
       <Accordion isCompact>
-        <AccordionItem className="tex" title="もっと詳細に記録する">
+        <AccordionItem title="もっと詳細に記録する">
           <div className="flex justify-between px-1 py-2">
             <RadioGroup
               className="gap-unit-1"

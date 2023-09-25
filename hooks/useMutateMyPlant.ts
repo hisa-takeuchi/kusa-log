@@ -20,7 +20,7 @@ export const useMutateMyPlants = () => {
           'my_plants',
         ])
         if (previousMyPlants) {
-          queryClient.setQueryData(['my_plants'], [...previousMyPlants, res[0]])
+          queryClient.setQueryData(['my_plants'], [res[0], ...previousMyPlants])
         }
         reset()
       },

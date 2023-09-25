@@ -11,6 +11,7 @@ import { RecordForm } from '../components/RecordForm'
 import { MyPlantForm } from '../components/MyPlantForm'
 import { MyPantList } from '../components/MyPantList'
 import { Spacer } from '@nextui-org/react'
+import { CreateMyPlant } from '../components/CreateMyPlant'
 
 const Dashboard: NextPage = () => {
   return (
@@ -18,6 +19,8 @@ const Dashboard: NextPage = () => {
       <h2 className="text-lg font-bold">お世話する植物</h2>
       <Spacer y={10} />
       <div className="mx-auto max-w-md px-unit-md">
+        <CreateMyPlant />
+        <Spacer y={3} />
         <MyPantList />
       </div>
 
