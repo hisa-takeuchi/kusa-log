@@ -16,7 +16,6 @@ export const useQueryMyPlants = () => {
   return useQuery<MyPlant[], Error>({
     queryKey: ['my_plants'],
     queryFn: getMyPlants,
-    staleTime: 0, // ms
-    refetchOnWindowFocus: true,
+    staleTime: Infinity,
   })
 }

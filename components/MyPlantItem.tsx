@@ -113,7 +113,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
           </CardBody>
           <CardFooter className="flex-col justify-between gap-unit-1 text-small">
             <b>{name}</b>
-            <p className="text-default-500">{records[0]?.record_date}</p>
+            {/*<p className="text-default-500">{records[0]?.record_date}</p>*/}
           </CardFooter>
         </Card>
       </Tooltip>
