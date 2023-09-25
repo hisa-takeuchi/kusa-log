@@ -81,7 +81,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
       setIsSubmitLoading(false)
       setIsShowTooltip(true)
       onOpenChange()
-    }, 2000)
+    }, 1000)
   }
 
   return (

@@ -56,7 +56,7 @@ export const CreateMyPlant = () => {
       }
       setIsSubmitLoading(false)
       onOpenChange()
-    }, 2000)
+    }, 1000)
   }
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -77,7 +77,9 @@ export const CreateMyPlant = () => {
               </ModalHeader>
               <ModalBody>
                 <Input
+                  isRequired
                   label="名前"
+                  radius="sm"
                   placeholder="モンステラ"
                   variant="bordered"
                   onChange={(e) =>
@@ -86,6 +88,7 @@ export const CreateMyPlant = () => {
                 />
                 <Input
                   label="購入日"
+                  radius="sm"
                   type="date"
                   variant="bordered"
                   placeholder="YYYY-MM-DD"
@@ -95,6 +98,7 @@ export const CreateMyPlant = () => {
                 />
                 <Textarea
                   label="土の配合"
+                  radius="sm"
                   variant="bordered"
                   placeholder="赤玉・軽石"
                   onChange={(e) =>
@@ -105,6 +109,7 @@ export const CreateMyPlant = () => {
                   <AccordionItem title="もっと詳細に入力する">
                     <Input
                       label="剪定した日"
+                      radius="sm"
                       type="date"
                       variant="bordered"
                       placeholder="YYYY-MM-DD"
@@ -115,6 +120,7 @@ export const CreateMyPlant = () => {
                     <Spacer y={3} />
                     <Input
                       label="植え替えした日"
+                      radius="sm"
                       type="date"
                       variant="bordered"
                       placeholder="YYYY-MM-DD"
