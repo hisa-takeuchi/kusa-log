@@ -14,7 +14,53 @@ import {
   Textarea,
 } from '@nextui-org/react'
 import dayjs from 'dayjs'
+import { styled } from '@mui/material/styles'
+import Rating, { IconContainerProps } from '@mui/material/Rating'
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied'
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied'
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined'
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
+import { Typography } from '@mui/material'
 
+const StyledRating = styled(Rating)(({ theme }) => ({
+  '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
+    color: theme.palette.action.disabled,
+  },
+}))
+
+const customIcons: {
+  [index: string]: {
+    icon: React.ReactElement
+    label: string
+  }
+} = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon color="error" fontSize="large" />,
+    label: 'Very Dissatisfied',
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon color="error" fontSize="large" />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon color="warning" fontSize="large" />,
+    label: 'Neutral',
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon color="success" fontSize="large" />,
+    label: 'Satisfied',
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon color="success" fontSize="large" />,
+    label: 'Very Satisfied',
+  },
+}
+
+function IconContainer(props: IconContainerProps) {
+  const { value, ...other } = props
+  return <span {...other}>{customIcons[value].icon}</span>
+}
 export const RecordForm: FC = () => {
   const { editedRecord } = useStore()
   const update = useStore((state) => state.updateEditedRecord)
@@ -78,22 +124,23 @@ export const RecordForm: FC = () => {
       <Spacer y={4} />
       <Accordion isCompact>
         <AccordionItem title="もっと詳細に記録する">
-          <div className="flex justify-between px-1 py-2">
-            <RadioGroup
-              className="gap-unit-1"
-              label="コンディション"
-              orientation="horizontal"
-              defaultValue={editedRecord.condition}
-              onChange={(e) =>
-                update({ ...editedRecord, condition: e.target.value })
-              }
-            >
-              <Radio value="1">Good</Radio>
-              <Radio value="2">Bad</Radio>
-              <Radio value="3">Danger</Radio>
-            </RadioGroup>
-          </div>
           <Spacer y={4} />
+          <div className="px-1 py-2">
+            <Typography component="legend">植物の様子</Typography>
+            <Spacer y={4} />
+            <StyledRating
+              size="large"
+              name="highlight-selected-only"
+              className="w-full justify-between"
+              defaultValue={3}
+              IconContainerComponent={IconContainer}
+              getLabelText={(value: number) => customIcons[value].label}
+              highlightSelectedOnly
+              onChange={(e, newVal) =>
+                update({ ...editedRecord, condition: newVal })
+              }
+            />
+          </div>
           <div className="flex justify-between px-1 py-2">
             <CheckboxGroup
               className="gap-unit-1"

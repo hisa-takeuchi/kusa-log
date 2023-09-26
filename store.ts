@@ -27,7 +27,7 @@ const useStore = create<State>((set) => ({
     wind_power: [],
     memo: '',
     temp: '',
-    condition: '',
+    condition: null,
   },
   editedMyPlant: {
     id: '',
@@ -79,7 +79,7 @@ const useStore = create<State>((set) => ({
         wind_power: [],
         memo: '',
         temp: '',
-        condition: '',
+        condition: null,
       },
     }),
   resetEditedMyPlant: () =>
