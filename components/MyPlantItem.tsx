@@ -147,34 +147,5 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
         </ModalContent>
       </Modal>
     </>
-
-    // {userId === user_id && (
-    //   <div className="flex">
-    //     <PencilAltIcon
-    //       className="mx-1 h-5 w-5 cursor-pointer text-green-500"
-    //       onClick={() => {
-    //         update({
-    //           id,
-    //           name,
-    //           buy_at,
-    //           cut_date,
-    //           replanted_date,
-    //           soil_info,
-    //         })
-    //       }}
-    //     />
-    //     <TrashIcon
-    //       className="h-5 w-5 cursor-pointer text-green-500"
-    //       onClick={() => {
-    //         deleteMyPlantMutation.mutate(id)
-    //       }}
-    //     />
-    //   </div>
-    // )}
-    // {records?.map((record) => (
-    //   <div key={record.id}>
-    //     <span>{record.record_date}</span>
-    //   </div>
-    // ))}
   )
 }

@@ -12,7 +12,7 @@ export type Record = {
   wind_power: string[] | undefined
   memo: string | undefined
   temp: string | undefined
-  condition: string | undefined
+  condition: number | null
   my_plants: MyPlant
 }
 

@@ -5,22 +5,14 @@ import jaLocale from '@fullcalendar/core/locales/ja'
 import { useQueryDistinctRecordDate } from '../hooks/useQueryDistinctRecordDate'
 import { LoadingSpinner } from './LoadingSpinner'
 import { EventContentArg } from '@fullcalendar/core'
-import { SunIcon } from '@heroicons/react/solid'
-import { Tooltip } from '@nextui-org/react'
-import { useState } from 'react'
-const EventComponent = (title: string) => {
-  return (
-    // <Tooltip showArrow={true} content={title}>
-    <SunIcon className="h-6 text-red-500"></SunIcon>
-    // </Tooltip>
-  )
-}
+import { CalendarEventButton } from './atoms/CalendarEventButton'
+
 export const RecordCalendar = () => {
   const { data: record_dates, status } = useQueryDistinctRecordDate()
   if (status === 'loading') return <LoadingSpinner />
   const recordEvents = record_dates?.map((date) => {
     return {
-      title: 'test',
+      title: 'name',
       start: new Date(date.record_date),
       end: new Date(date.record_date),
       description: 'test',
@@ -41,7 +33,9 @@ export const RecordCalendar = () => {
       }}
       contentHeight="480px"
       dayCellContent={(e) => e.dayNumberText.replace('日', '')}
-      eventContent={(arg: EventContentArg) => EventComponent(arg.event.title)}
+      eventContent={(arg: EventContentArg) => (
+        <CalendarEventButton title={arg.event.title} />
+      )}
     />
   )
 }
