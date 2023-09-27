@@ -4,9 +4,9 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "kusalog",
-    "short_name": "kusalog",
-    "description": "This is a Kusalog.com to create PWA",
+    "name": "草ログ",
+    "short_name": "草ログ",
+    "description": "草ログは植物の成長を記録するWebアプリです。",
     "icons": [
         {
             "src": "/icon-192x192.png",
