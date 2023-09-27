@@ -12,7 +12,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
-import { PencilIcon } from '@heroicons/react/solid'
+import { PencilIcon, PlusIcon } from '@heroicons/react/solid'
 import useStore from '../store'
 import { useMutateMyPlants } from '../hooks/useMutateMyPlant'
 import { FormEvent, useState } from 'react'
@@ -65,7 +65,7 @@ export const CreateMyPlant = () => {
     <>
       <div className="flex justify-end">
         <Button onPress={onOpen} isIconOnly color="primary" radius="sm">
-          <PencilIcon className="h-4" />
+          <PlusIcon className="h-4" />
         </Button>
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -73,7 +73,7 @@ export const CreateMyPlant = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                新規登録
+                植物を追加する
               </ModalHeader>
               <ModalBody>
                 <Input

@@ -1,9 +1,8 @@
 import { FC } from 'react'
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import useStore from '../store'
 import { useMutateRecord } from '../hooks/useMutateRecord'
 import { Record } from '../types/types'
-import { AccordionItem } from '@nextui-org/react'
+import { AccordionItem, Avatar } from '@nextui-org/react'
 
 export const RecordItem: FC<Omit<Record, 'created_at' | 'user_id'>> = ({
   id,
