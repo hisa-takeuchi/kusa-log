@@ -4,6 +4,15 @@ import { useQueryDistinctRecordDate } from '../hooks/useQueryDistinctRecordDate'
 import { LoadingSpinner } from './LoadingSpinner'
 import { RecordItem } from './RecordItem'
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import {
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Avatar,
+} from '@mui/material'
+import { LocalPharmacy, Science, WaterDrop } from '@mui/icons-material'
+import { blue, green, yellow } from '@mui/material/colors'
 
 export const RecordList: FC = () => {
   const { data: records, status } = useQueryRecords()
@@ -18,7 +27,35 @@ export const RecordList: FC = () => {
           title={record.record_date}
           key={record.id}
           subtitle={record.my_plants?.name}
-        ></AccordionItem>
+        >
+          <List
+            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          >
+            <ListItem>
+              {record.is_water && (
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: blue[500] }}>
+                    <WaterDrop />
+                  </Avatar>
+                </ListItemAvatar>
+              )}
+              {record.is_chemical && (
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: yellow[700] }}>
+                    <Science />
+                  </Avatar>
+                </ListItemAvatar>
+              )}
+              {record.is_fertilizer && (
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: green[500] }}>
+                    <LocalPharmacy />
+                  </Avatar>
+                </ListItemAvatar>
+              )}
+            </ListItem>
+          </List>
+        </AccordionItem>
       ))}
     </Accordion>
   )

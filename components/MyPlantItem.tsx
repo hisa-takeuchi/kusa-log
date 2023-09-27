@@ -16,9 +16,11 @@ import {
   ModalFooter,
   Button,
   Tooltip,
+  Spacer,
 } from '@nextui-org/react'
 import { RecordForm } from './RecordForm'
 import { useMutateRecord } from '../hooks/useMutateRecord'
+import { Typography } from '@mui/material'
 
 export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   id,
@@ -127,7 +129,13 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">{name}</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                {name}
+                <Spacer y={2}></Spacer>
+                <span className="text-sm font-medium">
+                  お世話記録を追加する
+                </span>
+              </ModalHeader>
               <ModalBody>
                 <RecordForm />
               </ModalBody>
