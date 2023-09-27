@@ -131,7 +131,7 @@ export const RecordForm: FC = () => {
             <StyledRating
               size="large"
               name="highlight-selected-only"
-              className="w-full justify-between"
+              className="w-full"
               defaultValue={3}
               IconContainerComponent={IconContainer}
               getLabelText={(value: number) => customIcons[value].label}
