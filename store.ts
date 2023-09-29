@@ -36,6 +36,7 @@ const useStore = create<State>((set) => ({
     soil_info: '',
     cut_date: '',
     replanted_date: '',
+    photo_url: '',
   },
   updateEditedRecord: (payload: EditedRecord) =>
     set({
@@ -63,6 +64,7 @@ const useStore = create<State>((set) => ({
         soil_info: payload.soil_info,
         cut_date: payload.cut_date,
         replanted_date: payload.replanted_date,
+        photo_url: payload.photo_url,
       },
     }),
   resetEditedRecord: () =>
@@ -91,6 +93,7 @@ const useStore = create<State>((set) => ({
         soil_info: '',
         cut_date: '',
         replanted_date: '',
+        photo_url: '',
       },
     }),
 }))

@@ -25,7 +25,9 @@ export type MyPlant = {
   soil_info: string | null
   cut_date: string | null
   replanted_date: string | null
+  photo_url: string | null
   records: Record[]
 }
+
 export type EditedRecord = Omit<Record, 'created_at' | 'user_id' | 'my_plants'>
 export type EditedMyPlant = Omit<MyPlant, 'created_at' | 'user_id' | 'records'>
