@@ -26,6 +26,10 @@ export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
     <div className="flex min-h-screen flex-col items-center text-gray-800">
       <Head>
         <title>{title}</title>
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0"
+        />
       </Head>
       {isLoggedIn && <AppHeader />}
       <main className="flex w-screen flex-1 flex-col items-center justify-center">

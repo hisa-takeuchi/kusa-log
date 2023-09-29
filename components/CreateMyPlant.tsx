@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionItem,
   Button,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -12,17 +13,22 @@ import {
   Textarea,
   useDisclosure,
 } from '@nextui-org/react'
+import UploadButton from '@mui/material/Button'
 import { PencilIcon, PlusIcon } from '@heroicons/react/solid'
 import useStore from '../store'
 import { useMutateMyPlants } from '../hooks/useMutateMyPlant'
 import { FormEvent, useState } from 'react'
 import { supabase } from '../utils/supabase'
 import { DateComponent } from '@fullcalendar/core/internal'
+import { removeBucketPath, uploadStorage } from '../libs/storage'
+import { Record } from '../types/types'
+import { useQueryClient } from 'react-query'
 
 export const CreateMyPlant = () => {
   const { editedMyPlant } = useStore()
   const update = useStore((state) => state.updateEditedMyPlant)
   const { createMyPlantMutation, updateMyPlantMutation } = useMutateMyPlants()
+  const queryClient = useQueryClient()
 
   const submitHandler = () => {
     setIsSubmitLoading(true)
@@ -39,6 +45,7 @@ export const CreateMyPlant = () => {
             editedMyPlant.replanted_date === ''
               ? null
               : editedMyPlant.replanted_date,
+          photo_url: editedMyPlant.photo_url || null,
         })
       } else {
         updateMyPlantMutation.mutate({
@@ -52,15 +59,36 @@ export const CreateMyPlant = () => {
             editedMyPlant.replanted_date === ''
               ? null
               : editedMyPlant.replanted_date,
+          photo_url: editedMyPlant.photo_url || null,
         })
       }
       setIsSubmitLoading(false)
       onOpenChange()
+      setPathName('')
     }, 1000)
+  }
+
+  const handleUploadStorage = async (folder: FileList | null) => {
+    if (!folder || !folder.length) return
+    const { path } = await uploadStorage({
+      dirName: 'plants',
+      folder,
+      bucketName: 'plants_photos',
+    })
+    if (path) {
+      const { data } = supabase.storage
+        .from('plants_photos')
+        .getPublicUrl(removeBucketPath(path, 'plants_photos'))
+      setPathName(data?.publicURL)
+      if (data) {
+        update({ ...editedMyPlant, photo_url: data.publicURL })
+      }
+    }
   }
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
+  const [path, setPathName] = useState<string | undefined>()
   return (
     <>
       <div className="flex justify-end">
@@ -86,6 +114,31 @@ export const CreateMyPlant = () => {
                     update({ ...editedMyPlant, name: e.target.value })
                   }
                 />
+                <UploadButton
+                  color="primary"
+                  variant="contained"
+                  component="label"
+                >
+                  画像をアップロードする
+                  <Input
+                    className="hidden"
+                    id="file-upload"
+                    name="photo_url"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => {
+                      const fileList = e.target?.files
+                      console.log(fileList)
+                      handleUploadStorage(fileList)
+                    }}
+                  />
+                </UploadButton>
+
+                <Image
+                  className="border border-gray-300"
+                  src={path && `https://app.requestly.io/delay/1000/${path}`}
+                />
+
                 <Input
                   label="購入日"
                   radius="sm"

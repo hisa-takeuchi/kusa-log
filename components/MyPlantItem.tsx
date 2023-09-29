@@ -30,6 +30,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   user_id,
   soil_info,
   buy_at,
+  photo_url,
   records,
 }) => {
   const [userId, setUserId] = useState<string | undefined>('')
@@ -110,7 +111,11 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
               height={200}
               alt={name}
               className="h-[140px] w-full object-cover"
-              src="https://app.requestly.io/delay/5000/https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+              src={
+                photo_url
+                  ? `https://app.requestly.io/delay/5000/${photo_url}`
+                  : '/images/default_avatar.jpeg'
+              }
             />
           </CardBody>
           <CardFooter className="flex-col justify-between gap-unit-1 text-small">

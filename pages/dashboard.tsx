@@ -8,7 +8,6 @@ import {
 import { Layout } from '../components/Layout'
 import { RecordList } from '../components/RecordList'
 import { RecordForm } from '../components/RecordForm'
-import { MyPlantForm } from '../components/MyPlantForm'
 import { MyPantList } from '../components/MyPantList'
 import { Spacer } from '@nextui-org/react'
 import { CreateMyPlant } from '../components/CreateMyPlant'
@@ -31,8 +30,6 @@ const Dashboard: NextPage = () => {
       {/*  <RecordForm />*/}
       {/*  <RecordList />*/}
       {/*</div>*/}
-
-      {/*<MyPlantForm />*/}
     </Layout>
   )
 }
