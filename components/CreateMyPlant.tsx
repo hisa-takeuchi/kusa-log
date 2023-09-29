@@ -23,6 +23,7 @@ import { DateComponent } from '@fullcalendar/core/internal'
 import { removeBucketPath, uploadStorage } from '../libs/storage'
 import { Record } from '../types/types'
 import { useQueryClient } from 'react-query'
+import { CameraAlt } from '@mui/icons-material'
 
 export const CreateMyPlant = () => {
   const { editedMyPlant } = useStore()
@@ -69,12 +70,14 @@ export const CreateMyPlant = () => {
   }
 
   const handleUploadStorage = async (folder: FileList | null) => {
+    setIsUploading(true)
     if (!folder || !folder.length) return
     const { path } = await uploadStorage({
       dirName: 'plants',
       folder,
       bucketName: 'plants_photos',
     })
+    console.log(path)
     if (path) {
       const { data } = supabase.storage
         .from('plants_photos')
@@ -84,11 +87,13 @@ export const CreateMyPlant = () => {
         update({ ...editedMyPlant, photo_url: data.publicURL })
       }
     }
+    setIsUploading(false)
   }
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
   const [path, setPathName] = useState<string | undefined>()
+  const [isUploading, setIsUploading] = useState(false)
   return (
     <>
       <div className="flex justify-end">
@@ -114,10 +119,12 @@ export const CreateMyPlant = () => {
                     update({ ...editedMyPlant, name: e.target.value })
                   }
                 />
-                <UploadButton
+                <Button
+                  radius="sm"
                   color="primary"
-                  variant="contained"
-                  component="label"
+                  as="label"
+                  endContent={<CameraAlt />}
+                  isLoading={isUploading}
                 >
                   画像をアップロードする
                   <Input
@@ -132,12 +139,9 @@ export const CreateMyPlant = () => {
                       handleUploadStorage(fileList)
                     }}
                   />
-                </UploadButton>
+                </Button>
 
-                <Image
-                  className="border border-gray-300"
-                  src={path && `https://app.requestly.io/delay/1000/${path}`}
-                />
+                <Image alt="" className="border border-gray-300" src={path} />
 
                 <Input
                   label="購入日"
