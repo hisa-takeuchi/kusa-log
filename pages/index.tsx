@@ -7,7 +7,18 @@ import {
 import type { NextPage } from 'next'
 import { useMutateAuth } from '../hooks/useMutateAuth'
 import { Layout } from '../components/Layout'
-import { Input, Spacer, Button, Link } from '@nextui-org/react'
+import {
+  Input,
+  Spacer,
+  Button,
+  Link,
+  Modal,
+  ModalHeader,
+  useDisclosure,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+} from '@nextui-org/react'
 
 const Auth: NextPage = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -25,8 +36,10 @@ const Auth: NextPage = () => {
       loginMutation.mutate()
     } else {
       registerMutation.mutate()
+      onOpen()
     }
   }
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   return (
     <Layout title={isLogin ? 'ログイン' : '新規登録'}>
       <h2 className="font-bold">{isLogin ? 'ログイン' : '新規登録'}</h2>
@@ -73,6 +86,24 @@ const Auth: NextPage = () => {
           {isLogin ? '新規登録はこちら' : '既にアカウントをお持ちの方はこちら'}
         </Link>
       </form>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>確認メールを送信しました</ModalHeader>
+              <ModalBody className="text-sm">
+                <p>登録したメールアドレスに確認メールを送信しました。</p>
+                <p>メールを確認し、登録を完了してください。</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onPress={onClose}>
+                  閉じる
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </Layout>
   )
 }

@@ -34,17 +34,23 @@ export const AppHeader = () => {
               src="/images/default_avatar.jpeg"
             />
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownMenu
+            aria-label="Profile Actions"
+            variant="flat"
+            disabledKeys={['general', 'settings', 'help']}
+            onAction={(key) => {
+              key === 'logout' && signOut()
+            }}
+          >
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">{user?.email}</p>
               <p className="font-semibold">でログイン中</p>
             </DropdownItem>
             <DropdownItem key="general">一般</DropdownItem>
             <DropdownItem key="settings">ユーザー設定</DropdownItem>
-            <DropdownItem key="help_and_feedback">ヘルプ</DropdownItem>
+            <DropdownItem key="help">ヘルプ</DropdownItem>
             <DropdownItem
               startContent={<LogoutIcon className="h-4" />}
-              onClick={signOut}
               key="logout"
               color="danger"
               className="text-danger"
