@@ -6,6 +6,8 @@ import { AppHeader } from './AppHeader'
 import { supabase } from '../utils/supabase'
 import { AppFooter } from './AppFooter'
 import { User } from '@supabase/gotrue-js'
+import { useA2HS } from '../libs/useA2HS'
+import { RecommendPwaNotice } from './RecommendPwaNotice'
 
 type Title = {
   title: string
@@ -21,6 +23,7 @@ export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
   useEffect(() => {
     checkLoggedInUser()
   }, [])
+  const [promptEvent] = useA2HS()
 
   return (
     <div className="flex min-h-screen flex-col items-center text-gray-800">
@@ -31,6 +34,7 @@ export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
           content="width=device-width,initial-scale=1.0,maximum-scale=1.0"
         />
       </Head>
+      <RecommendPwaNotice />
       {isLoggedIn && <AppHeader />}
       <main className="flex w-screen flex-1 flex-col items-center justify-center">
         {children}
