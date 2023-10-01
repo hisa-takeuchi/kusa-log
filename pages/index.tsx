@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useMemo } from 'react'
 import {
   BadgeCheckIcon,
   LoginIcon,
@@ -39,6 +39,13 @@ const Auth: NextPage = () => {
       onOpen()
     }
   }
+  const validateEmail = (value: string) =>
+    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
+  const isInvalid = useMemo(() => {
+    if (email === '' || password === '') return true
+
+    return !validateEmail(email)
+  }, [email, password])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   return (
     <Layout title={isLogin ? 'ログイン' : '新規登録'}>
@@ -46,6 +53,7 @@ const Auth: NextPage = () => {
       <Spacer y={5} />
       <form onSubmit={handleSubmit}>
         <Input
+          isRequired
           variant="bordered"
           size="lg"
           type="text"
@@ -57,6 +65,7 @@ const Auth: NextPage = () => {
         />
         <Spacer y={5} />
         <Input
+          isRequired
           variant="bordered"
           size="lg"
           type="password"
@@ -73,6 +82,7 @@ const Auth: NextPage = () => {
           size="lg"
           endContent={<LoginIcon className="h-4" color="white" />}
           radius="sm"
+          isDisabled={isInvalid}
         >
           {isLogin ? 'ログインする' : '新規登録する'}
         </Button>
@@ -86,7 +96,7 @@ const Auth: NextPage = () => {
           {isLogin ? '新規登録はこちら' : '既にアカウントをお持ちの方はこちら'}
         </Link>
       </form>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
