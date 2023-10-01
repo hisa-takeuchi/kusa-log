@@ -1,29 +1,42 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import Head from 'next/head'
-import { BadgeCheckIcon } from '@heroicons/react/solid'
-import { Navbar, NavbarBrand, useUser } from '@nextui-org/react'
-import { AppHeader } from './AppHeader'
-import { supabase } from '../utils/supabase'
-import { AppFooter } from './AppFooter'
-import { User } from '@supabase/gotrue-js'
+import styled from 'styled-components'
+import { useIsStandalone } from './useIsStandalone'
+import { useResize } from './useResize'
+import { AppLayout } from './AppLayout'
+import { StoreArticle } from './StoreArticle'
 
 type Title = {
   title: string
   children: ReactNode
 }
 export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const checkLoggedInUser = async () => {
-    // ログインのセッションを取得する処理
-    const user = await supabase.auth.user()
-    setIsLoggedIn(!!user)
-  }
+  const Wrapper = styled.div`
+    line-height: 1em;
+
+    [data-is-init] {
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+
+      &[data-is-init='true'] {
+        opacity: 1;
+      }
+    }
+  `
+
+  const [isInit, setIsInit] = useState(false)
+  const { windowWidth, windowHeight } = useResize()
+  const { isStandalone } = useIsStandalone({
+    width: windowWidth,
+    height: windowHeight,
+  })
+
   useEffect(() => {
-    checkLoggedInUser()
-  }, [])
+    setIsInit(true)
+  }, [isStandalone])
 
   return (
-    <div className="flex min-h-screen flex-col items-center text-gray-800">
+    <Wrapper>
       <Head>
         <title>{title}</title>
         <meta
@@ -31,11 +44,20 @@ export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
           content="width=device-width,initial-scale=1.0,maximum-scale=1.0"
         />
       </Head>
-      {isLoggedIn && <AppHeader />}
-      <main className="flex w-screen flex-1 flex-col items-center justify-center">
-        {children}
-      </main>
-      {isLoggedIn && <AppFooter />}
-    </div>
+      <div data-is-init={isInit}>
+        {isStandalone ? (
+          <AppLayout>{children}</AppLayout>
+        ) : (
+          <StoreArticle
+            title="草ログ"
+            icon="/icon-256x256.png"
+            author="he's at"
+            description="草ログは植物のお世話を記録するアプリです。"
+            copyright="copyright"
+            ogImage="/icon-512x512.png"
+          />
+        )}
+      </div>
+    </Wrapper>
   )
 }
