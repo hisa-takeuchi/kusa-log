@@ -58,18 +58,29 @@ export const AppHeader = () => {
               key === 'logout' && signOut()
             }}
           >
-            <DropdownItem key="profile" className="h-14 gap-2">
+            <DropdownItem
+              key="profile"
+              className="h-14 gap-2"
+              textValue="ログインユーザー名"
+            >
               <p className="font-semibold">{user?.email}</p>
               <p className="font-semibold">でログイン中</p>
             </DropdownItem>
-            <DropdownItem key="general">一般</DropdownItem>
-            <DropdownItem key="settings">ユーザー設定</DropdownItem>
-            <DropdownItem key="help">ヘルプ</DropdownItem>
+            <DropdownItem key="general" textValue="一般">
+              一般
+            </DropdownItem>
+            <DropdownItem key="settings" textValue="ユーザー設定">
+              ユーザー設定
+            </DropdownItem>
+            <DropdownItem key="help" textValue="ヘルプ">
+              ヘルプ
+            </DropdownItem>
             <DropdownItem
               startContent={<LogoutIcon className="h-4" />}
               key="logout"
               color="danger"
               className="text-danger"
+              textValue="ログアウト"
             >
               ログアウト
             </DropdownItem>
