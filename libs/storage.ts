@@ -26,7 +26,7 @@ export const uploadStorage = async ({
     })
   if (error) throw error
   return {
-    path: data?.Key ?? null,
+    path: data?.path ?? null,
   }
 }
 

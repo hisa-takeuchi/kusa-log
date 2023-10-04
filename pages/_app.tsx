@@ -20,7 +20,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // ユーザーのログイン状態を監視
   const validateSession = async () => {
-    const user = supabase.auth.user()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    const user = session?.user
     if (user && pathname === '/') {
       push('/dashboard')
     } else if (!user && pathname !== '/') {

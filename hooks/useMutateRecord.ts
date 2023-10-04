@@ -8,7 +8,10 @@ export const useMutateRecord = () => {
   const reset = useStore((state) => state.resetEditedRecord)
   const createRecordMutation = useMutation(
     async (record: Omit<Record, 'id' | 'created_at' | 'my_plants'>) => {
-      const { data, error } = await supabase.from('records').insert(record)
+      const { data, error } = await supabase
+        .from('records')
+        .insert(record)
+        .select()
 
       if (error) throw new Error(error.message)
 
@@ -40,6 +43,7 @@ export const useMutateRecord = () => {
           record_date: record.record_date,
         })
         .eq('id', record.id)
+        .select()
 
       if (error) throw new Error(error.message)
 
@@ -70,6 +74,7 @@ export const useMutateRecord = () => {
         .from('records')
         .delete()
         .eq('id', id)
+        .select()
 
       if (error) throw new Error(error.message)
 

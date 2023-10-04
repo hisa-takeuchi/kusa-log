@@ -36,8 +36,17 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   const [userId, setUserId] = useState<string | undefined>('')
   const update = useStore((state) => state.updateEditedMyPlant)
   const { deleteMyPlantMutation } = useMutateMyPlants()
+  const getCurrentUserId = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    const user = session?.user
+    if (user) {
+      setUserId(user?.id)
+    }
+  }
   useEffect(() => {
-    setUserId(supabase.auth.user()?.id)
+    getCurrentUserId()
   }, [])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const { editedRecord } = useStore()
@@ -52,7 +61,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
     setTimeout(() => {
       if (editedRecord.id === '') {
         createRecordMutation.mutate({
-          user_id: supabase.auth.user()?.id,
+          user_id: userId,
           plant_id: id,
           is_water: editedRecord.is_water,
           is_fertilizer: editedRecord.is_fertilizer,
