@@ -10,12 +10,28 @@ import {
 } from '@nextui-org/react'
 import { supabase } from '../utils/supabase'
 import { LogoutIcon } from '@heroicons/react/solid'
+import { useEffect, useState } from 'react'
+import { User } from '@supabase/gotrue-js'
 
 export const AppHeader = () => {
+  const [user, setUser] = useState<User>()
   const signOut = () => {
     supabase.auth.signOut()
   }
-  const user = supabase.auth.user()
+  const getCurrentUser = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    const user = session?.user
+    if (user) {
+      setUser(user)
+    }
+  }
+
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
+
   return (
     <Navbar>
       <NavbarBrand>

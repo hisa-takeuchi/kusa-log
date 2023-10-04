@@ -17,26 +17,26 @@ import UploadButton from '@mui/material/Button'
 import { PencilIcon, PlusIcon } from '@heroicons/react/solid'
 import useStore from '../store'
 import { useMutateMyPlants } from '../hooks/useMutateMyPlant'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { supabase } from '../utils/supabase'
 import { DateComponent } from '@fullcalendar/core/internal'
 import { removeBucketPath, uploadStorage } from '../libs/storage'
 import { Record } from '../types/types'
 import { useQueryClient } from 'react-query'
 import { CameraAlt } from '@mui/icons-material'
+import { User } from '@supabase/gotrue-js'
 
 export const CreateMyPlant = () => {
   const { editedMyPlant } = useStore()
   const update = useStore((state) => state.updateEditedMyPlant)
   const { createMyPlantMutation, updateMyPlantMutation } = useMutateMyPlants()
   const queryClient = useQueryClient()
-
   const submitHandler = () => {
     setIsSubmitLoading(true)
     setTimeout(() => {
       if (editedMyPlant.id === '') {
         createMyPlantMutation.mutate({
-          user_id: supabase.auth.user()?.id,
+          user_id: user?.id,
           name: editedMyPlant.name,
           buy_at: editedMyPlant.buy_at === '' ? null : editedMyPlant.buy_at,
           soil_info: editedMyPlant.soil_info,
@@ -79,12 +79,10 @@ export const CreateMyPlant = () => {
     })
     console.log(path)
     if (path) {
-      const { data } = supabase.storage
-        .from('plants_photos')
-        .getPublicUrl(removeBucketPath(path, 'plants_photos'))
-      setPathName(data?.publicURL)
+      const { data } = supabase.storage.from('plants_photos').getPublicUrl(path)
+      setPathName(data?.publicUrl)
       if (data) {
-        update({ ...editedMyPlant, photo_url: data.publicURL })
+        update({ ...editedMyPlant, photo_url: data.publicUrl })
       }
     }
     setIsUploading(false)
@@ -94,6 +92,19 @@ export const CreateMyPlant = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
   const [path, setPathName] = useState<string | undefined>()
   const [isUploading, setIsUploading] = useState(false)
+  const [user, setUser] = useState<User>()
+  const getCurrentUser = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    const user = session?.user
+    if (user) {
+      setUser(user)
+    }
+  }
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
   return (
     <>
       <div className="flex justify-end">

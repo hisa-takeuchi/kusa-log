@@ -8,7 +8,10 @@ export const useMutateMyPlants = () => {
   const reset = useStore((state) => state.resetEditedMyPlant)
   const createMyPlantMutation = useMutation(
     async (myPlant: Omit<MyPlant, 'id' | 'created_at' | 'records'>) => {
-      const { data, error } = await supabase.from('my_plants').insert(myPlant)
+      const { data, error } = await supabase
+        .from('my_plants')
+        .insert(myPlant)
+        .select()
 
       if (error) throw new Error(error.message)
 
@@ -42,6 +45,7 @@ export const useMutateMyPlants = () => {
           replanted_date: myPlant.replanted_date,
         })
         .eq('id', myPlant.id)
+        .select()
 
       if (error) throw new Error(error.message)
 
@@ -74,6 +78,7 @@ export const useMutateMyPlants = () => {
         .from('my_plants')
         .delete()
         .eq('id', id)
+        .select()
 
       if (error) throw new Error(error.message)
 

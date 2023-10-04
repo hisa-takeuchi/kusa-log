@@ -15,7 +15,10 @@ export const Layout: FC<Title> = ({ children, title = '草ログ' }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const checkLoggedInUser = async () => {
     // ログインのセッションを取得する処理
-    const user = await supabase.auth.user()
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    const user = session?.user
     setIsLoggedIn(!!user)
   }
   useEffect(() => {
