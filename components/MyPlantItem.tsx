@@ -122,7 +122,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
               className="h-[140px] w-full object-cover"
               src={
                 photo_url
-                  ? `https://app.requestly.io/delay/5000/${photo_url}`
+                  ? `https://app.requestly.io/delay/1000/${photo_url}`
                   : '/images/default_avatar.jpeg'
               }
             />

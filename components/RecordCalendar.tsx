@@ -12,7 +12,7 @@ export const RecordCalendar = () => {
   if (status === 'loading') return <LoadingSpinner />
   const recordEvents = record_dates?.map((date) => {
     return {
-      title: 'name',
+      title: String(date.plant_names),
       start: new Date(date.record_date),
       end: new Date(date.record_date),
       description: 'test',
@@ -22,20 +22,24 @@ export const RecordCalendar = () => {
   })
 
   return (
-    <FullCalendar
-      events={recordEvents}
-      locale={jaLocale}
-      plugins={[dayGridPlugin, interactionPlugin]}
-      headerToolbar={{
-        start: '',
-        center: 'title',
-        end: 'prev,next',
-      }}
-      contentHeight="480px"
-      dayCellContent={(e) => e.dayNumberText.replace('日', '')}
-      eventContent={(arg: EventContentArg) => (
-        <CalendarEventButton title={arg.event.title} />
-      )}
-    />
+    <div className="rounded-sm border border-gray-300 p-5">
+      <FullCalendar
+        aspectRatio={0.7}
+        events={recordEvents}
+        locale={jaLocale}
+        plugins={[dayGridPlugin, interactionPlugin]}
+        headerToolbar={{
+          start: '',
+          center: 'title',
+          end: 'prev,next',
+        }}
+        fixedWeekCount={false}
+        showNonCurrentDates={false}
+        dayCellContent={(e) => e.dayNumberText.replace('日', '')}
+        eventContent={(arg: EventContentArg) => (
+          <CalendarEventButton plants={arg.event.title} />
+        )}
+      />
+    </div>
   )
 }

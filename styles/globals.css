@@ -51,3 +51,6 @@
 .fc .fc-theme-standard td, .fc-theme-standard th {
     height: 30px;
 }
+.fc .fc-day-disabled {
+    visibility: hidden;
+}
