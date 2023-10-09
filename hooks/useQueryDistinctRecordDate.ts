@@ -1,6 +1,13 @@
 import { useQuery } from 'react-query'
 import { supabase } from '../utils/supabase'
 import { Record } from '../types/types'
+
+interface RecordDateProps {
+  record_date: string
+  plant_names: string[]
+  user_id: string
+}
+
 export const useQueryDistinctRecordDate = () => {
   const getDistinctRecordDate = async () => {
     const {
@@ -16,7 +23,7 @@ export const useQueryDistinctRecordDate = () => {
     }
     return data
   }
-  return useQuery<Record[], Error>({
+  return useQuery<RecordDateProps[], Error>({
     queryKey: ['record_date'],
     queryFn: getDistinctRecordDate,
     staleTime: 0,
