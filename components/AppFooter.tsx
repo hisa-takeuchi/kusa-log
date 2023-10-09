@@ -1,54 +1,40 @@
-import { Tab, Tabs } from '@nextui-org/react'
 import { useRouter } from 'next/router'
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
+import { CalendarMonth, Home, Person } from '@mui/icons-material'
+import { SyntheticEvent, useState } from 'react'
 
 export const AppFooter = () => {
   const { push, pathname } = useRouter()
+
+  const [value, setValue] = useState(pathname)
+
+  const handleChange = (_: SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+    push(newValue)
+  }
   return (
-    <Tabs
-      as="footer"
-      size="lg"
-      aria-label="Options"
-      variant="underlined"
-      fullWidth
-      className="sticky bottom-0 z-20 mt-unit-3"
-      classNames={{
-        tabList:
-          'bg-white justify-center gap-unit-10 w-full relative rounded-none mx-auto border-b border-divider',
-        cursor: 'w-full bg-[#22d3ee]',
-        tab: 'max-w-fit px-0 h-12',
-        tabContent: 'group-data-[selected=true]:text-[#06b6d4]',
-      }}
-      onSelectionChange={(path) => {
-        const url = path.toString()
-        push(url)
-      }}
-      defaultSelectedKey="/dashboard"
-      selectedKey={pathname}
+    <Paper
+      sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 20 }}
+      elevation={3}
     >
-      <Tab
-        key="/dashboard"
-        title={
-          <div className="flex items-center space-x-2">
-            <span>MyPlants</span>
-          </div>
-        }
-      />
-      <Tab
-        key="/records"
-        title={
-          <div className="flex items-center space-x-2">
-            <span>Record</span>
-          </div>
-        }
-      />
-      <Tab
-        key="/users"
-        title={
-          <div className="flex items-center space-x-2">
-            <span>Users</span>
-          </div>
-        }
-      />
-    </Tabs>
+      <BottomNavigation value={value} onChange={handleChange}>
+        <BottomNavigationAction
+          label="ホーム"
+          value="/dashboard"
+          icon={<Home />}
+        />
+        <BottomNavigationAction
+          label="記録"
+          value="/records"
+          icon={<CalendarMonth />}
+        />
+        <BottomNavigationAction
+          label="ユーザー"
+          value="/users"
+          icon={<Person />}
+          disabled
+        />
+      </BottomNavigation>
+    </Paper>
   )
 }
