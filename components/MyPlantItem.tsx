@@ -120,11 +120,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
               height={200}
               alt={name}
               className="h-[140px] w-full object-cover"
-              src={
-                photo_url
-                  ? `https://app.requestly.io/delay/1000/${photo_url}`
-                  : '/images/default_avatar.jpeg'
-              }
+              src={photo_url ? photo_url : '/images/default_avatar.jpeg'}
             />
           </CardBody>
           <CardFooter className="flex-col justify-between gap-unit-1 text-small">
