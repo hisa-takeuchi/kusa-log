@@ -14,7 +14,14 @@ export const AppFooter = () => {
   }
   return (
     <Paper
-      sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 20 }}
+      sx={{
+        position: 'sticky',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 20,
+        width: '100%',
+      }}
       elevation={3}
     >
       <BottomNavigation value={value} onChange={handleChange}>

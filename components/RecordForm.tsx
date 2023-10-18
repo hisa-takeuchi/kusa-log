@@ -29,7 +29,7 @@ const StyledRating = styled(Rating)(({ theme }) => ({
   },
 }))
 
-const customIcons: {
+export const customIcons: {
   [index: string]: {
     icon: React.ReactElement
     label: string
@@ -37,23 +37,23 @@ const customIcons: {
 } = {
   1: {
     icon: <SentimentVeryDissatisfiedIcon color="error" fontSize="large" />,
-    label: 'Very Dissatisfied',
+    label: '絶不調',
   },
   2: {
     icon: <SentimentDissatisfiedIcon color="error" fontSize="large" />,
-    label: 'Dissatisfied',
+    label: '不調',
   },
   3: {
     icon: <SentimentSatisfiedIcon color="warning" fontSize="large" />,
-    label: 'Neutral',
+    label: '普通',
   },
   4: {
     icon: <SentimentSatisfiedAltIcon color="success" fontSize="large" />,
-    label: 'Satisfied',
+    label: '好調',
   },
   5: {
     icon: <SentimentVerySatisfiedIcon color="success" fontSize="large" />,
-    label: 'Very Satisfied',
+    label: '絶好調',
   },
 }
 
@@ -132,7 +132,6 @@ export const RecordForm: FC = () => {
               size="large"
               name="highlight-selected-only"
               className="w-full"
-              defaultValue={3}
               IconContainerComponent={IconContainer}
               getLabelText={(value: number) => customIcons[value].label}
               highlightSelectedOnly
