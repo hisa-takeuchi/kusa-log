@@ -1,6 +1,6 @@
-export const FormatDate = () => {
-  const now = new Date()
-  const year = now.getFullYear()
+export const FormatDate = (inputDate: Date | null) => {
+  const now = inputDate || new Date()
+  // const year = now.getFullYear()
   const month = now.getMonth() + 1
   const date = now.getDate()
   const day = now.getDay()

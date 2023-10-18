@@ -12,8 +12,8 @@ const Records: NextPage = () => {
       <Spacer y={10} />
       <div className="mx-auto w-full max-w-md px-unit-md">
         <RecordCalendar />
-        <Spacer y={5} />
-        <RecordList />
+        {/*<Spacer y={5} />*/}
+        {/*<RecordList />*/}
       </div>
     </Layout>
   )

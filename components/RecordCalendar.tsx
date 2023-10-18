@@ -12,12 +12,11 @@ export const RecordCalendar = () => {
   if (status === 'loading') return <LoadingSpinner />
   const recordEvents = record_dates?.map((date) => {
     return {
-      title: String(date.plant_names),
       start: new Date(date.record_date),
       end: new Date(date.record_date),
-      description: 'test',
-      backgroundColor: 'green',
-      borderColor: 'green',
+      extendedProps: {
+        date,
+      },
     }
   })
 
@@ -37,7 +36,7 @@ export const RecordCalendar = () => {
         showNonCurrentDates={false}
         dayCellContent={(e) => e.dayNumberText.replace('日', '')}
         eventContent={(arg: EventContentArg) => (
-          <CalendarEventButton plants={arg.event.title} />
+          <CalendarEventButton {...arg.event.extendedProps.date} />
         )}
       />
     </div>
