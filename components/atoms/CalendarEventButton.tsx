@@ -42,14 +42,7 @@ import {
   WaterDrop,
   WbSunny,
 } from '@mui/icons-material'
-import { fontSize } from '@mui/system'
 import { customIcons } from '../RecordForm'
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
-import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied'
-import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied'
-import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined'
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
-import { skyblue } from 'color-name'
 
 interface PlantsDataProps {
   is_water: boolean
@@ -72,12 +65,6 @@ export interface DateRecordProps {
 export const CalendarEventButton = (props: DateRecordProps) => {
   const { plants_data, record_date } = props
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
 
   const d = new Date(record_date)
 
@@ -182,7 +169,7 @@ export const CalendarEventButton = (props: DateRecordProps) => {
                         />
                       </ListItem>
                     )}
-                    {JSON.parse(plant.weather).length > 0 && (
+                    {JSON.parse(plant.weather).length === 1 && (
                       <ListItem>
                         <ListItemAvatar>
                           <Avatar
