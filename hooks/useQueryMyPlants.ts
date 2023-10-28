@@ -8,7 +8,7 @@ export const useQueryMyPlants = () => {
     } = await supabase.auth.getUser()
     const { data, error } = await supabase
       .from('my_plants')
-      .select('*, records(*)')
+      .select('*, records(record_date)')
       .order('created_at', { ascending: false })
       .eq('user_id', user?.id)
     if (error) {

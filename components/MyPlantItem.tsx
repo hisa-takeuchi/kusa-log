@@ -17,10 +17,20 @@ import {
   Button,
   Tooltip,
   Spacer,
+  Accordion,
+  AccordionItem,
 } from '@nextui-org/react'
 import { RecordForm } from './RecordForm'
 import { useMutateRecord } from '../hooks/useMutateRecord'
-import { Typography } from '@mui/material'
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from '@mui/material'
+import { FormatDate } from '../libs/formatDate'
+import { History } from '@mui/icons-material'
 
 export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   id,
@@ -53,6 +63,19 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
   const { createRecordMutation, updateRecordMutation } = useMutateRecord()
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
   const [isShowTooltip, setIsShowTooltip] = useState(false)
+
+  const formatted = (date: string) => {
+    if (!date) return null
+
+    return new Date(date)
+  }
+  const latestDate = () => {
+    const recordDate = records[records.length - 1]?.record_date
+    if (!recordDate) return
+
+    const d = new Date(recordDate)
+    return FormatDate(d)
+  }
   const submitHandler = () => {
     // 2秒止める
     setIsSubmitLoading(true)
@@ -135,13 +158,64 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
         onOpenChange={onOpenChange}
         placement="bottom"
         isDismissable={!isSubmitLoading}
+        classNames={{
+          closeButton:
+            'absolute rounded-full bg-danger text-white -top-9 hover:bg-white hover:text-primary',
+        }}
       >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {name}
-                <Spacer y={2}></Spacer>
+                <Accordion isCompact hidden={false}>
+                  <AccordionItem title={name}>
+                    <List
+                      sx={{
+                        width: '100%',
+                        maxWidth: 360,
+                        bgcolor: 'background.paper',
+                      }}
+                    >
+                      {latestDate() && (
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar sx={{ width: 34, height: 34 }}>
+                              <History></History>
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText className="[&>span]:text-sm">
+                            前回お世話した日：{latestDate()}
+                          </ListItemText>
+                        </ListItem>
+                      )}
+                      {/*{soil_info && (*/}
+                      {/*  <ListItem>*/}
+                      {/*    <ListItemText className="[&>span]:text-sm">*/}
+                      {/*      土の配合：{soil_info}*/}
+                      {/*    </ListItemText>*/}
+                      {/*  </ListItem>*/}
+                      {/*)}*/}
+                      {/*{replanted_date && (*/}
+                      {/*  <ListItem>*/}
+                      {/*    <ListItemAvatar>*/}
+                      {/*      <Avatar sx={{ width: 34, height: 34 }}></Avatar>*/}
+                      {/*    </ListItemAvatar>*/}
+                      {/*    <ListItemText className="[&>span]:text-sm">*/}
+                      {/*      植え替えした日：*/}
+                      {/*      {FormatDate(formatted(replanted_date))}*/}
+                      {/*    </ListItemText>*/}
+                      {/*  </ListItem>*/}
+                      {/*)}*/}
+                      {/*{cut_date && (*/}
+                      {/*  <ListItem>*/}
+                      {/*    <ListItemText className="[&>span]:text-sm">*/}
+                      {/*      剪定した日：{FormatDate(formatted(cut_date))}*/}
+                      {/*    </ListItemText>*/}
+                      {/*  </ListItem>*/}
+                      {/*)}*/}
+                    </List>
+                  </AccordionItem>
+                </Accordion>
                 <span className="text-sm font-medium">
                   お世話記録を追加する
                 </span>
