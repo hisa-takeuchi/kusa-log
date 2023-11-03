@@ -73,7 +73,7 @@ export const CreateMyPlant = () => {
     setIsUploading(true)
     if (!folder || !folder.length) return
     const { path } = await uploadStorage({
-      dirName: 'plants',
+      dirName: user?.id,
       folder,
       bucketName: 'plants_photos',
     })

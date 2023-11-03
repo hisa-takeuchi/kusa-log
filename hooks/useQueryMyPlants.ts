@@ -9,6 +9,7 @@ export const useQueryMyPlants = () => {
     const { data, error } = await supabase
       .from('my_plants')
       .select('*, records(*)')
+      .order('record_date', { foreignTable: 'records', ascending: false })
       .order('created_at', { ascending: false })
       .eq('user_id', user?.id)
     if (error) {

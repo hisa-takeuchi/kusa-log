@@ -11,8 +11,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { SunIcon } from '@heroicons/react/solid'
-import { MyPlant, Record } from '../../types/types'
-import { FormatDate } from '../../libs/formatDate'
+import { FormatDate } from '../../utils/formatDate'
 import {
   Avatar,
   List,

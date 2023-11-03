@@ -2,13 +2,18 @@ import { supabase } from '../utils/supabase'
 import { v4 as uuidv4 } from 'uuid'
 
 type UploadStorage = {
-  dirName: string
+  dirName: string | undefined
   folder: FileList
   bucketName: string
 }
 
 type UploadPathname = {
   path: string | null
+}
+
+type DeleteStorage = {
+  paths: string[]
+  bucketName: string
 }
 
 export const uploadStorage = async ({
@@ -33,4 +38,11 @@ export const uploadStorage = async ({
 // storage の key から bucket 名を取り除く
 export const removeBucketPath = (key: string, bucketName: string) => {
   return key.slice(bucketName.length + 1) // "/"の分だけ加算している
+}
+
+export const deleteStorage = async ({
+  paths,
+  bucketName,
+}: DeleteStorage): Promise<void> => {
+  await supabase.storage.from(bucketName).remove(paths)
 }
