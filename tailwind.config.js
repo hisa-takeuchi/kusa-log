@@ -5,6 +5,7 @@ module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './features/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
@@ -18,10 +19,10 @@ module.exports = {
     extend: {
       colors: {
         theme: {
-          // light: '#ffffff',
-          // medium: '#cccccc',
-          // DEFAULT: '#242424',
-          // dark: '#111111',
+          light: '#ffffff',
+          medium: '#6d6d6d',
+          DEFAULT: '#242424',
+          dark: '#111111',
         },
         // メインカラー
         primary: {

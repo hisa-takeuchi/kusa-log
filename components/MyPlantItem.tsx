@@ -16,33 +16,41 @@ import {
   ModalFooter,
   Button,
   Tooltip,
-  Spacer,
-  Accordion,
-  AccordionItem,
 } from '@nextui-org/react'
 import { RecordForm } from './RecordForm'
 import { useMutateRecord } from '../hooks/useMutateRecord'
 import {
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
+  Backdrop,
+  Box,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  Typography,
 } from '@mui/material'
-import { FormatDate } from '../libs/formatDate'
-import { History } from '@mui/icons-material'
+import { Close, Delete, Edit, History, Save } from '@mui/icons-material'
+import { ShowPlant } from '../features/plant/components/ShowPlant'
+import { deleteStorage } from '../libs/storage'
+import {
+  PiPlant,
+  PiPlantFill,
+  PiPottedPlant,
+  PiPottedPlantFill,
+} from 'react-icons/pi'
+import { MdOutlineClose } from 'react-icons/md'
+import { TbCalendarPlus, TbEdit, TbTrash } from 'react-icons/tb'
 
-export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
-  id,
-  name,
-  cut_date,
-  replanted_date,
-  user_id,
-  soil_info,
-  buy_at,
-  photo_url,
-  records,
-}) => {
+export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
+  const {
+    id,
+    name,
+    cut_date,
+    replanted_date,
+    user_id,
+    soil_info,
+    buy_at,
+    photo_url,
+    records,
+  } = props
   const [userId, setUserId] = useState<string | undefined>('')
   const update = useStore((state) => state.updateEditedMyPlant)
   const { deleteMyPlantMutation } = useMutateMyPlants()
@@ -59,23 +67,26 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
     getCurrentUserId()
   }, [])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const {
+    isOpen: isConfirmOpen,
+    onOpen: onConfirmOpen,
+    onOpenChange: onOpenConfirmChange,
+  } = useDisclosure()
+  const {
+    isOpen: childIsOpen,
+    onOpen: onChildOpen,
+    onOpenChange: childOnOpenChange,
+  } = useDisclosure()
   const { editedRecord } = useStore()
-  const { createRecordMutation, updateRecordMutation } = useMutateRecord()
+  const { createRecordMutation, updateRecordMutation, deleteRecordMutation } =
+    useMutateRecord()
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
   const [isShowTooltip, setIsShowTooltip] = useState(false)
 
-  const formatted = (date: string) => {
-    if (!date) return null
+  const [speedDialOpen, setSpeedDialOpenOpen] = useState(false)
+  const handleSpeedDialOpen = () => setSpeedDialOpenOpen(true)
+  const handleSpeedDialClose = () => setSpeedDialOpenOpen(false)
 
-    return new Date(date)
-  }
-  const latestDate = () => {
-    const recordDate = records[records.length - 1]?.record_date
-    if (!recordDate) return
-
-    const d = new Date(recordDate)
-    return FormatDate(d)
-  }
   const submitHandler = () => {
     // 2秒止める
     setIsSubmitLoading(true)
@@ -119,6 +130,61 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
     }, 1000)
   }
 
+  const deletePlant = async () => {
+    setIsSubmitLoading(true)
+    // URLからオブジェクト名を抽出
+    try {
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          deleteMyPlantMutation.mutate(id)
+          if (photo_url) {
+            const urlParts = new URL(photo_url)
+            const objectName = urlParts.pathname.substring(
+              '/storage/v1/object/public/plants_photos/'.length,
+            )
+            // storageから画像を削除
+            deleteStorage({
+              paths: [objectName],
+              bucketName: 'plants_photos',
+            })
+          }
+        }, 1000)
+      })
+
+      setIsSubmitLoading(false) // ローディング状態を解除
+      handleSpeedDialClose()
+      onOpenChange()
+    } catch (error) {
+      // エラーハンドリング
+      console.error('削除処理エラー:', error)
+      setIsSubmitLoading(false) // エラー時もローディング状態を解除
+    }
+  }
+
+  const actions = [
+    {
+      icon: <TbCalendarPlus color="#16a34a" size="1.5rem" />,
+      name: '記録する',
+      func: () => {
+        onChildOpen()
+      },
+    },
+    {
+      icon: <TbEdit color="#16a34a" size="1.5rem" />,
+      name: '編集する',
+      func: () => {
+        onChildOpen()
+      },
+    },
+    {
+      icon: <TbTrash color="#16a34a" size="1.5rem" />,
+      name: '削除する',
+      func: () => {
+        onOpenConfirmChange()
+      },
+    },
+  ]
+
   return (
     <>
       <Tooltip
@@ -157,81 +223,164 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = ({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="bottom"
-        isDismissable={!isSubmitLoading}
         classNames={{
-          closeButton:
-            'absolute rounded-full bg-danger text-white -top-9 hover:bg-white hover:text-primary',
+          header: 'border-b-[1px] border-[#cdcccc]',
         }}
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                <Accordion isCompact hidden={false}>
-                  <AccordionItem title={name}>
-                    <List
-                      sx={{
-                        width: '100%',
-                        maxWidth: 360,
-                        bgcolor: 'background.paper',
-                      }}
-                    >
-                      {latestDate() && (
-                        <ListItem>
-                          <ListItemAvatar>
-                            <Avatar sx={{ width: 34, height: 34 }}>
-                              <History></History>
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText className="[&>span]:text-sm">
-                            前回お世話した日：{latestDate()}
-                          </ListItemText>
-                        </ListItem>
-                      )}
-                      {/*{soil_info && (*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText className="[&>span]:text-sm">*/}
-                      {/*      土の配合：{soil_info}*/}
-                      {/*    </ListItemText>*/}
-                      {/*  </ListItem>*/}
-                      {/*)}*/}
-                      {/*{replanted_date && (*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemAvatar>*/}
-                      {/*      <Avatar sx={{ width: 34, height: 34 }}></Avatar>*/}
-                      {/*    </ListItemAvatar>*/}
-                      {/*    <ListItemText className="[&>span]:text-sm">*/}
-                      {/*      植え替えした日：*/}
-                      {/*      {FormatDate(formatted(replanted_date))}*/}
-                      {/*    </ListItemText>*/}
-                      {/*  </ListItem>*/}
-                      {/*)}*/}
-                      {/*{cut_date && (*/}
-                      {/*  <ListItem>*/}
-                      {/*    <ListItemText className="[&>span]:text-sm">*/}
-                      {/*      剪定した日：{FormatDate(formatted(cut_date))}*/}
-                      {/*    </ListItemText>*/}
-                      {/*  </ListItem>*/}
-                      {/*)}*/}
-                    </List>
-                  </AccordionItem>
-                </Accordion>
-                <span className="text-sm font-medium">
-                  お世話記録を追加する
-                </span>
+              <ModalHeader className="flex flex-col gap-1 text-center">
+                {name}
               </ModalHeader>
               <ModalBody>
-                <RecordForm />
+                {/*<RecordForm />*/}
+                <ShowPlant {...props} />
               </ModalBody>
               <ModalFooter>
+                <Backdrop open={speedDialOpen} />
+                <SpeedDial
+                  ariaLabel="Plant SpeedDial"
+                  sx={{
+                    position: 'absolute',
+                    bottom: 16,
+                    right: 16,
+                  }}
+                  FabProps={{
+                    color: 'success',
+                  }}
+                  icon={
+                    <SpeedDialIcon
+                      classes={{
+                        root: '!h-fit',
+                      }}
+                      icon={
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <PiPottedPlantFill size="1.2rem" />
+                          <Typography fontSize={9}>記録</Typography>
+                        </Box>
+                      }
+                      openIcon={
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            width: '100%',
+                            left: '2%',
+                          }}
+                        >
+                          <MdOutlineClose size="1.5rem" />
+                          <Typography fontSize={9}>閉じる</Typography>
+                        </Box>
+                      }
+                    />
+                  }
+                  onClose={handleSpeedDialClose}
+                  onOpen={handleSpeedDialOpen}
+                  open={speedDialOpen}
+                >
+                  {actions.map((action) => (
+                    <SpeedDialAction
+                      key={action.name}
+                      icon={action.icon}
+                      tooltipTitle={action.name}
+                      tooltipOpen
+                      TooltipClasses={{
+                        tooltip: 'text-xl',
+                      }}
+                      onClick={action.func}
+                      classes={{
+                        staticTooltipLabel:
+                          '!text-lg !font-medium !text-white !bg-transparent !shadow-none',
+                      }}
+                    />
+                  ))}
+                </SpeedDial>
+
+                {/*<Button*/}
+                {/*  className="text-white"*/}
+                {/*  color="success"*/}
+                {/*  onPress={onChildOpen}*/}
+                {/*>*/}
+                {/*  記録する*/}
+                {/*</Button>*/}
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+        <Modal
+          isOpen={childIsOpen}
+          onOpenChange={childOnOpenChange}
+          placement="center"
+          scrollBehavior="inside"
+          isDismissable={!isSubmitLoading}
+          classNames={{
+            closeButton:
+              'absolute rounded-full bg-danger text-white -top-4 hover:bg-white hover:text-primary',
+          }}
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader>お世話を記録する</ModalHeader>
+                <ModalBody>
+                  <RecordForm />
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    className="w-full text-white"
+                    color="success"
+                    onPress={submitHandler}
+                    isLoading={isSubmitLoading}
+                    isDisabled={editedRecord.record_date === ''}
+                  >
+                    記録する
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </Modal>
+      <Modal
+        isOpen={isConfirmOpen}
+        onOpenChange={onOpenConfirmChange}
+        placement="center"
+        scrollBehavior="inside"
+        isDismissable={!isSubmitLoading}
+        classNames={{
+          closeButton:
+            'absolute rounded-full bg-danger text-white -top-4 hover:bg-white hover:text-primary',
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader></ModalHeader>
+              <ModalBody className="text-center">
+                <p className="text-xl">この植物を削除しますか？</p>
+                <p className="text-sm">
+                  過去に記録したお世話記録も削除されます。
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button className="text-white" onPress={onClose}>
+                  キャンセル
+                </Button>
                 <Button
                   className="text-white"
-                  color="success"
-                  onPress={submitHandler}
+                  color="danger"
+                  onPress={deletePlant}
                   isLoading={isSubmitLoading}
-                  isDisabled={editedRecord.record_date === ''}
                 >
-                  記録する
+                  削除する
                 </Button>
               </ModalFooter>
             </>
