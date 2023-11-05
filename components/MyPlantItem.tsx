@@ -127,6 +127,8 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
       setIsSubmitLoading(false)
       setIsShowTooltip(true)
       onOpenChange()
+      childOnOpenChange()
+      handleSpeedDialClose()
     }, 1000)
   }
 
@@ -153,7 +155,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
 
       setIsSubmitLoading(false) // ローディング状態を解除
       handleSpeedDialClose()
-      onOpenChange()
+      onOpenConfirmChange()
     } catch (error) {
       // エラーハンドリング
       console.error('削除処理エラー:', error)

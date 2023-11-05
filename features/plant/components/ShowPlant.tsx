@@ -22,9 +22,8 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const waterRecords = records?.filter((record) => record.is_water)
 
   const getDiffDate = () => {
-    if (waterRecords.length === 0) return
+    if (!waterRecords || waterRecords.length === 0) return
 
-    console.log(waterRecords)
     const lastRecordDateStr = waterRecords[0].record_date
     const lastRecordDate = new Date(lastRecordDateStr)
 
