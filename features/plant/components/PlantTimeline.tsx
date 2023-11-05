@@ -55,7 +55,7 @@ export const PlantTimeline: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
     <div>
       <h3 className="font-bold">タイムライン</h3>
       <Spacer y={5} />
-      {records?.length === 0 && <p>お世話記録がありません</p>}
+      {(!records || records?.length === 0) && <p>お世話記録がありません</p>}
       <Accordion selectionMode="multiple" isCompact>
         {records?.map((record) => (
           <AccordionItem
