@@ -1,15 +1,26 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { MyPlant } from '../../../types/types'
 import { Box, Card, CardContent, CardMedia } from '@mui/material'
 import { Spacer } from '@nextui-org/react'
 import { FormatDate } from '../../../utils/formatDate'
+import { CalcTimeInterval } from '../../../utils/calcTimeInterval'
 
 export const PlantInfoCard: FC<
   Pick<
     MyPlant,
-    'photo_url' | 'soil_info' | 'buy_at' | 'replanted_date' | 'cut_date'
+    | 'photo_url'
+    | 'soil_info'
+    | 'buy_at'
+    | 'replanted_date'
+    | 'cut_date'
+    | 'records'
   >
-> = ({ photo_url, soil_info, buy_at, replanted_date, cut_date }) => {
+> = ({ photo_url, soil_info, buy_at, replanted_date, cut_date, records }) => {
+  const [wateringInterval, setWateringInterval] = useState<number | null>(null)
+  useEffect(() => {
+    setWateringInterval(CalcTimeInterval(records))
+  }, [])
+
   return (
     <Card sx={{ display: 'flex', minHeight: 150 }}>
       <CardMedia
@@ -42,6 +53,14 @@ export const PlantInfoCard: FC<
             <Spacer y={2} />
             <dd className="text-right text-sm">
               {cut_date ? FormatDate(new Date(cut_date)) : '-'}
+            </dd>
+            <Spacer y={4} />
+            <dt className="text-xs text-theme-medium">
+              これまでの平均水やり頻度
+            </dt>
+            <Spacer y={2} />
+            <dd className="text-right text-sm">
+              {wateringInterval ? `${wateringInterval}回/週` : '-'}
             </dd>
           </dl>
         </CardContent>
