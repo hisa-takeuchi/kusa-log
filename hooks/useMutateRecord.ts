@@ -2,10 +2,12 @@ import { useQueryClient, useMutation } from 'react-query'
 import useStore from '../store'
 import { supabase } from '../utils/supabase'
 import { Record, EditedRecord } from '../types/types'
+import { useQueryMyPlants } from './useQueryMyPlants'
 
 export const useMutateRecord = () => {
   const queryClient = useQueryClient()
   const reset = useStore((state) => state.resetEditedRecord)
+  const { refetch } = useQueryMyPlants()
   const createRecordMutation = useMutation(
     async (record: Omit<Record, 'id' | 'created_at' | 'my_plants'>) => {
       const { data, error } = await supabase
@@ -25,6 +27,7 @@ export const useMutateRecord = () => {
           queryClient.setQueryData(['records'], [...previousRecords, res[0]])
         }
         reset()
+        refetch()
       },
       onError: (err: any) => {
         console.log(err.message)
