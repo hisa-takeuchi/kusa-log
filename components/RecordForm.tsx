@@ -64,7 +64,6 @@ function IconContainer(props: IconContainerProps) {
 export const RecordForm: FC = () => {
   const { editedRecord } = useStore()
   const update = useStore((state) => state.updateEditedRecord)
-  const { data: myPlants, status } = useQueryMyPlants()
 
   return (
     <div className="mb-3">

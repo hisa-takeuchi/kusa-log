@@ -368,9 +368,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
               <ModalHeader></ModalHeader>
               <ModalBody className="text-center">
                 <p className="text-xl">この植物を削除しますか？</p>
-                <p className="text-sm">
-                  過去に記録したお世話記録も削除されます。
-                </p>
+                <p className="text-sm">過去のお世話記録も削除されます。</p>
               </ModalBody>
               <ModalFooter>
                 <Button className="text-white" onPress={onClose}>
