@@ -22,6 +22,7 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied'
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined'
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
 import { Typography } from '@mui/material'
+import { WindPower } from '../types/types'
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -165,7 +166,7 @@ export const RecordForm: FC = () => {
               orientation="horizontal"
               onValueChange={(val) => {
                 if (val.length > 1) return
-                update({ ...editedRecord, wind_power: val })
+                update({ ...editedRecord, wind_power: val as WindPower[] })
               }}
             >
               <Checkbox value="1">弱</Checkbox>

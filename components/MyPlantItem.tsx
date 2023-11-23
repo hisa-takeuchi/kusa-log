@@ -27,7 +27,7 @@ import {
   SpeedDialIcon,
   Typography,
 } from '@mui/material'
-import { Close, Delete, Edit, History, Save } from '@mui/icons-material'
+import NextImage from 'next/image'
 import { ShowPlant } from '../features/plant/components/ShowPlant'
 import { deleteStorage } from '../libs/storage'
 import {
@@ -206,7 +206,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
         <Card isPressable onPress={onOpen}>
           <CardBody className="overflow-visible p-0">
             <Image
-              shadow="sm"
+              as={NextImage}
               width={300}
               height={200}
               alt={name}
