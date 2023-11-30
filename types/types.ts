@@ -1,3 +1,9 @@
+export enum WindPower {
+  '弱' = '1',
+  '普通' = '2',
+  '強い' = '3',
+}
+
 export type Record = {
   id: string
   created_at: string
@@ -9,7 +15,7 @@ export type Record = {
   user_id: string | undefined
   light_power: string | undefined
   weather: string[] | undefined
-  wind_power: string[] | undefined
+  wind_power: WindPower[] | undefined
   memo: string | undefined
   temp: string | undefined
   condition: number | null
