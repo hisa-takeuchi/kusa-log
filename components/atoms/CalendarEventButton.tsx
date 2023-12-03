@@ -152,7 +152,7 @@ export const CalendarEventButton = (props: DateRecordProps) => {
                             <Science />
                           </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="肥料" />
+                        <ListItemText primary="殺虫・殺菌" />
                       </ListItem>
                     )}
                     {plant.is_fertilizer && (
@@ -162,10 +162,7 @@ export const CalendarEventButton = (props: DateRecordProps) => {
                             <LocalPharmacy />
                           </Avatar>
                         </ListItemAvatar>
-                        <ListItemText
-                          className="text-xs"
-                          primary="殺虫・殺菌"
-                        />
+                        <ListItemText className="text-xs" primary="肥料" />
                       </ListItem>
                     )}
                     {JSON.parse(plant.weather).length === 1 && (
