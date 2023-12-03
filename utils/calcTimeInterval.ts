@@ -17,6 +17,6 @@ export const CalcTimeInterval = (records: Record[]) => {
   // 1週間あたりの水やり回数
   const wateringFrequencyPerWeek = (isWaterCount / totalDays) * 7
 
-  // 小数点1位以下切り捨て
-  return Math.floor(wateringFrequencyPerWeek)
+  // 小数点2位以下切り捨て
+  return Math.floor(wateringFrequencyPerWeek * 10) / 10
 }
