@@ -1,6 +1,8 @@
 import { Record } from '../types/types'
 
 export const CalcTimeInterval = (records: Record[]) => {
+  if (!records) return null
+
   const isWaterRecords = records.filter((record) => record.is_water)
   const isWaterCount = isWaterRecords.length
 

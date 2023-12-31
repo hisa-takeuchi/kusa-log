@@ -38,6 +38,7 @@ import {
 } from 'react-icons/pi'
 import { MdOutlineClose } from 'react-icons/md'
 import { TbCalendarPlus, TbEdit, TbTrash } from 'react-icons/tb'
+import { EditMyPlantModal } from '../features/plant/components/EditMyPlantModal'
 
 export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const {
@@ -73,11 +74,16 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
     onOpenChange: onOpenConfirmChange,
   } = useDisclosure()
   const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onOpenChange: onOpenEditChange,
+  } = useDisclosure()
+  const {
     isOpen: childIsOpen,
     onOpen: onChildOpen,
     onOpenChange: childOnOpenChange,
   } = useDisclosure()
-  const { editedRecord } = useStore()
+  const { editedRecord, editedMyPlant } = useStore()
   const { createRecordMutation, updateRecordMutation, deleteRecordMutation } =
     useMutateRecord()
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
@@ -86,7 +92,6 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const [speedDialOpen, setSpeedDialOpenOpen] = useState(false)
   const handleSpeedDialOpen = () => setSpeedDialOpenOpen(true)
   const handleSpeedDialClose = () => setSpeedDialOpenOpen(false)
-
   const submitHandler = () => {
     // 2秒止める
     setIsSubmitLoading(true)
@@ -175,7 +180,8 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
       icon: <TbEdit color="#16a34a" size="1.5rem" />,
       name: '編集する',
       func: () => {
-        onChildOpen()
+        update({ ...props })
+        onOpenEditChange()
       },
     },
     {
@@ -350,6 +356,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
             )}
           </ModalContent>
         </Modal>
+        <EditMyPlantModal isOpen={isEditOpen} onOpenChange={onOpenEditChange} />
       </Modal>
       <Modal
         isOpen={isConfirmOpen}

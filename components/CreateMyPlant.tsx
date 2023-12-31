@@ -25,8 +25,7 @@ import { PlantForm } from '../features/plant/components/PlantForm'
 
 export const CreateMyPlant = () => {
   const { editedMyPlant } = useStore()
-  console.log(editedMyPlant)
-  const update = useStore((state) => state.updateEditedMyPlant)
+  const reset = useStore((state) => state.resetEditedMyPlant)
   const { createMyPlantMutation, updateMyPlantMutation } = useMutateMyPlants()
   const queryClient = useQueryClient()
   const submitHandler = () => {
@@ -80,13 +79,17 @@ export const CreateMyPlant = () => {
       setUser(user)
     }
   }
+  const onOpenModal = () => {
+    reset()
+    onOpen()
+  }
   useEffect(() => {
     getCurrentUser()
   }, [])
   return (
     <>
       <div className="flex justify-end">
-        <Button onPress={onOpen} isIconOnly color="primary" radius="sm">
+        <Button onPress={onOpenModal} isIconOnly color="primary" radius="sm">
           <PlusIcon className="h-4" />
         </Button>
       </div>
