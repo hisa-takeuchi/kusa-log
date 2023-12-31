@@ -52,7 +52,7 @@ export const EditMyPlantModal = (props: EditModalProps) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                基本情報を編集する
+                　植物情報の変更
               </ModalHeader>
               <ModalBody>
                 <PlantForm />
@@ -66,7 +66,7 @@ export const EditMyPlantModal = (props: EditModalProps) => {
                   isDisabled={editedMyPlant.name === ''}
                   isLoading={isSubmitLoading}
                 >
-                  編集する
+                  変更する
                 </Button>
               </ModalFooter>
             </>
