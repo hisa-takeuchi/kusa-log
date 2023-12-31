@@ -98,7 +98,7 @@ export const CreateMyPlant = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                植物を追加する
+                植物の登録
               </ModalHeader>
               <ModalBody>
                 <PlantForm />
