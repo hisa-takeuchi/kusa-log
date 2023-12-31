@@ -25,7 +25,6 @@ export const PlantForm = () => {
       folder,
       bucketName: 'plants_photos',
     })
-    console.log(path)
     if (path) {
       const { data } = supabase.storage.from('plants_photos').getPublicUrl(path)
       setPathName(data?.publicUrl)
@@ -60,6 +59,7 @@ export const PlantForm = () => {
         radius="sm"
         placeholder="モンステラ"
         variant="bordered"
+        value={editedMyPlant.name}
         onChange={(e) => update({ ...editedMyPlant, name: e.target.value })}
       />
       <Button
@@ -78,13 +78,16 @@ export const PlantForm = () => {
           accept="image/png, image/jpeg"
           onChange={(e) => {
             const fileList = e.target?.files
-            console.log(fileList)
             handleUploadStorage(fileList)
           }}
         />
       </Button>
 
-      <Image alt="" className="border border-gray-300" src={path} />
+      <Image
+        alt=""
+        className="border border-gray-300"
+        src={editedMyPlant.photo_url || path}
+      />
 
       <Input
         label="購入日"
@@ -92,6 +95,7 @@ export const PlantForm = () => {
         type="date"
         variant="bordered"
         placeholder="YYYY-MM-DD"
+        value={editedMyPlant.buy_at || ''}
         onChange={(e) => update({ ...editedMyPlant, buy_at: e.target.value })}
       />
       <Textarea
@@ -99,6 +103,7 @@ export const PlantForm = () => {
         radius="sm"
         variant="bordered"
         placeholder="赤玉・軽石"
+        value={editedMyPlant.soil_info || ''}
         onChange={(e) =>
           update({ ...editedMyPlant, soil_info: e.target.value })
         }
@@ -111,6 +116,7 @@ export const PlantForm = () => {
             type="date"
             variant="bordered"
             placeholder="YYYY-MM-DD"
+            value={editedMyPlant.cut_date || ''}
             onChange={(e) =>
               update({ ...editedMyPlant, cut_date: e.target.value })
             }
@@ -122,6 +128,7 @@ export const PlantForm = () => {
             type="date"
             variant="bordered"
             placeholder="YYYY-MM-DD"
+            value={editedMyPlant.replanted_date || ''}
             onChange={(e) =>
               update({
                 ...editedMyPlant,

@@ -43,6 +43,7 @@ export const useMutateMyPlants = () => {
           soil_info: myPlant.soil_info,
           cut_date: myPlant.cut_date,
           replanted_date: myPlant.replanted_date,
+          photo_url: myPlant.photo_url,
         })
         .eq('id', myPlant.id)
         .select()

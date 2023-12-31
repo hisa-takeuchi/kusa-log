@@ -1,6 +1,8 @@
 import { Record } from '../types/types'
 
 export const CalcTimeInterval = (records: Record[]) => {
+  if (!records) return null
+
   const isWaterRecords = records.filter((record) => record.is_water)
   const isWaterCount = isWaterRecords.length
 
@@ -17,6 +19,6 @@ export const CalcTimeInterval = (records: Record[]) => {
   // 1週間あたりの水やり回数
   const wateringFrequencyPerWeek = (isWaterCount / totalDays) * 7
 
-  // 小数点1位以下切り捨て
-  return Math.floor(wateringFrequencyPerWeek)
+  // 小数点2位以下切り捨て
+  return Math.floor(wateringFrequencyPerWeek * 10) / 10
 }
