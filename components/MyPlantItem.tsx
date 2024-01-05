@@ -112,6 +112,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
           memo: editedRecord.memo,
           temp: editedRecord.temp,
           condition: editedRecord.condition,
+          photo_url: editedRecord.photo_url,
         })
       } else {
         updateRecordMutation.mutate({
@@ -127,6 +128,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
           memo: editedRecord.memo,
           temp: editedRecord.temp,
           condition: editedRecord.condition,
+          photo_url: editedRecord.photo_url,
         })
       }
       setIsSubmitLoading(false)

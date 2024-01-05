@@ -16,6 +16,7 @@ export const ImageUploadButton = (props: Props) => {
       as="label"
       endContent={<CameraAlt />}
       isLoading={isUploading}
+      className="w-full"
     >
       画像をアップロードする
       <ImageInput onChange={onChange} />

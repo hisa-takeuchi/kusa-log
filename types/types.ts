@@ -19,6 +19,7 @@ export type Record = {
   memo: string | undefined
   temp: string | undefined
   condition: number | null
+  photo_url: string | null
   my_plants: MyPlant
 }
 

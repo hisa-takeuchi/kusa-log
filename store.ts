@@ -28,6 +28,7 @@ const useStore = create<State>((set) => ({
     memo: '',
     temp: '',
     condition: null,
+    photo_url: '',
   },
   editedMyPlant: {
     id: '',
@@ -53,6 +54,7 @@ const useStore = create<State>((set) => ({
         memo: payload.memo,
         temp: payload.temp,
         condition: payload.condition,
+        photo_url: payload.photo_url,
       },
     }),
   updateEditedMyPlant: (payload: EditedMyPlant) =>
@@ -82,6 +84,7 @@ const useStore = create<State>((set) => ({
         memo: '',
         temp: '',
         condition: null,
+        photo_url: '',
       },
     }),
   resetEditedMyPlant: () =>
