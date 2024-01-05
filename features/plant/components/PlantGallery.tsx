@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { MyPlant, Record } from '../../../types/types'
 import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material'
 import {
@@ -16,16 +16,31 @@ import '@splidejs/react-splide/css'
 
 export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
   const [imagePath, setImagePath] = useState<string | null>('')
+  const [hasPhotos, setHasPhotos] = useState(false)
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const handleOpen = (record: Record) => {
     setImagePath(record.photo_url)
     onOpen()
   }
+  const filterPhotos = () => {
+    const photoRecords = records.filter((record) => record.photo_url)
+    if (photoRecords.length > 0) {
+      setHasPhotos(true)
+    }
+  }
+  useEffect(() => {
+    filterPhotos()
+  }, [])
+
   return (
     <div>
       <h3 className="font-bold">ギャラリー</h3>
       <Spacer y={3} />
-      {(!records || records?.length === 0) && <p>お世話記録がありません</p>}
+      {(!records || records?.length === 0) && (
+        <p className="text-sm">お世話記録がありません</p>
+      )}
+      {!hasPhotos && <p className="text-sm">画像がありません</p>}
+
       <ImageList cols={3}>
         {records?.map((record) => (
           <>
