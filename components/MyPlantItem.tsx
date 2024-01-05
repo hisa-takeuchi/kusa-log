@@ -248,7 +248,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
                 <ShowPlant {...props} />
               </ModalBody>
               <ModalFooter>
-                <Backdrop open={speedDialOpen} />
+                <Backdrop sx={{ 'z-index': 50 }} open={speedDialOpen} />
                 <SpeedDial
                   ariaLabel="Plant SpeedDial"
                   sx={{
@@ -313,14 +313,6 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
                     />
                   ))}
                 </SpeedDial>
-
-                {/*<Button*/}
-                {/*  className="text-white"*/}
-                {/*  color="success"*/}
-                {/*  onPress={onChildOpen}*/}
-                {/*>*/}
-                {/*  記録する*/}
-                {/*</Button>*/}
               </ModalFooter>
             </>
           )}
