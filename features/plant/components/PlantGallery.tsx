@@ -13,6 +13,7 @@ import {
 import NextImage from 'next/image'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css'
+import { PhotoLibraryOutlined } from '@mui/icons-material'
 
 export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
   const [imagePath, setImagePath] = useState<string | null>('')
@@ -34,12 +35,12 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
 
   return (
     <div>
-      <h3 className="font-bold">ギャラリー</h3>
-      <Spacer y={3} />
       {(!records || records?.length === 0) && (
-        <p className="text-sm">お世話記録がありません</p>
+        <p className="text-sm text-theme-medium">お世話記録がありません</p>
       )}
-      {!hasPhotos && <p className="text-sm">画像がありません</p>}
+      {!hasPhotos && (
+        <p className="text-sm text-theme-medium">画像がありません</p>
+      )}
 
       <ImageList cols={3}>
         {records?.map((record) => (
@@ -47,7 +48,8 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
             {record.photo_url && (
               <ImageListItem key={record.id} onClick={() => handleOpen(record)}>
                 <Image
-                  className="rounded-none"
+                  className="h-full"
+                  radius="none"
                   as={NextImage}
                   width={150}
                   height={150}
@@ -90,6 +92,7 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
                     <SplideSlide>
                       <Image
                         as={NextImage}
+                        radius="none"
                         width={400}
                         height={400}
                         src={imagePath || ''}

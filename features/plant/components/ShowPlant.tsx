@@ -14,6 +14,11 @@ import { PlantInfoCard } from './PlantInfoCard'
 import { PlantTimeline } from './PlantTimeline'
 import { PlantGallery } from './PlantGallery'
 import { TabPanel } from '../../../components/organisms/TabPanel'
+import {
+  GridOnOutlined,
+  HistoryOutlined,
+  PhotoLibraryOutlined,
+} from '@mui/icons-material'
 
 export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const {
@@ -79,9 +84,20 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
         value={tabValue}
         onChange={handleTabChange}
         aria-label="plant tabs"
+        variant="fullWidth"
       >
-        <Tab label="タイムライン" {...a11yProps(0)} />
-        <Tab label="ギャラリー" {...a11yProps(1)} />
+        <Tab
+          icon={<HistoryOutlined />}
+          label="お世話記録"
+          wrapped
+          {...a11yProps(0)}
+        />
+        <Tab
+          icon={<GridOnOutlined />}
+          label="ギャラリー"
+          wrapped
+          {...a11yProps(1)}
+        />
       </Tabs>
       <TabPanel index={0} value={tabValue}>
         <PlantTimeline records={records} />
