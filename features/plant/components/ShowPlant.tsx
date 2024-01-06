@@ -1,9 +1,24 @@
 import { MyPlant } from '../../../types/types'
-import { FC, useEffect, useState } from 'react'
-import { Alert, Box, Card, CardContent, CardMedia } from '@mui/material'
+import { FC, SyntheticEvent, useEffect, useState } from 'react'
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Tab,
+  Tabs,
+} from '@mui/material'
 import { Spacer } from '@nextui-org/react'
 import { PlantInfoCard } from './PlantInfoCard'
 import { PlantTimeline } from './PlantTimeline'
+import { PlantGallery } from './PlantGallery'
+import { TabPanel } from '../../../components/organisms/TabPanel'
+import {
+  GridOnOutlined,
+  HistoryOutlined,
+  PhotoLibraryOutlined,
+} from '@mui/icons-material'
 
 export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const {
@@ -19,6 +34,7 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   } = props
 
   const [diffDate, setDiffDate] = useState(0)
+  const [tabValue, setTabValue] = useState(0)
   const waterRecords = records?.filter((record) => record.is_water)
 
   const getDiffDate = () => {
@@ -36,6 +52,17 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
     setDiffDate(date)
   }
 
+  const handleTabChange = (_: SyntheticEvent, newValue: number) => {
+    setTabValue(newValue)
+  }
+
+  const a11yProps = (index: number) => {
+    return {
+      id: `plant-tab-${index}`,
+      'aria-controls': `plant-tabpanel-${index}`,
+    }
+  }
+
   useEffect(() => {
     getDiffDate()
   }, [])
@@ -51,7 +78,33 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
       <Spacer y={5} />
       <PlantInfoCard {...props} />
       <Spacer y={5} />
-      <PlantTimeline records={records} />
+      <Tabs
+        textColor="primary"
+        indicatorColor="primary"
+        value={tabValue}
+        onChange={handleTabChange}
+        aria-label="plant tabs"
+        variant="fullWidth"
+      >
+        <Tab
+          icon={<HistoryOutlined />}
+          label="お世話記録"
+          wrapped
+          {...a11yProps(0)}
+        />
+        <Tab
+          icon={<GridOnOutlined />}
+          label="ギャラリー"
+          wrapped
+          {...a11yProps(1)}
+        />
+      </Tabs>
+      <TabPanel index={0} value={tabValue}>
+        <PlantTimeline records={records} />
+      </TabPanel>
+      <TabPanel index={1} value={tabValue}>
+        <PlantGallery records={records} />
+      </TabPanel>
     </div>
   )
 }

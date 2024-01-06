@@ -25,6 +25,7 @@ export const PlantInfoCard: FC<
   return (
     <>
       <Image
+        radius="sm"
         as={NextImage}
         className="z-0 h-[350px] w-full object-cover"
         height="350"

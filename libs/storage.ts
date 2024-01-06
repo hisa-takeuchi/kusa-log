@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 type UploadStorage = {
   dirName: string | undefined
-  folder: FileList
+  fileList: FileList
   bucketName: string
 }
 
@@ -18,10 +18,10 @@ type DeleteStorage = {
 
 export const uploadStorage = async ({
   dirName,
-  folder,
+  fileList,
   bucketName,
 }: UploadStorage): Promise<UploadPathname> => {
-  const file = folder[0] // 1ファイルアップロード
+  const file = fileList[0] // 1ファイルアップロード
   const pathName = `${dirName}/${uuidv4()}/` // パス名の設定
   const { data, error } = await supabase.storage
     .from(bucketName)

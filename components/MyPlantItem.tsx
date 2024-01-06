@@ -112,6 +112,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
           memo: editedRecord.memo,
           temp: editedRecord.temp,
           condition: editedRecord.condition,
+          photo_url: editedRecord.photo_url,
         })
       } else {
         updateRecordMutation.mutate({
@@ -127,6 +128,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
           memo: editedRecord.memo,
           temp: editedRecord.temp,
           condition: editedRecord.condition,
+          photo_url: editedRecord.photo_url,
         })
       }
       setIsSubmitLoading(false)
@@ -212,6 +214,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
         <Card isPressable onPress={onOpen}>
           <CardBody className="overflow-visible p-0">
             <Image
+              radius="none"
               as={NextImage}
               width={300}
               height={200}
@@ -246,7 +249,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
                 <ShowPlant {...props} />
               </ModalBody>
               <ModalFooter>
-                <Backdrop open={speedDialOpen} />
+                <Backdrop sx={{ 'z-index': 50 }} open={speedDialOpen} />
                 <SpeedDial
                   ariaLabel="Plant SpeedDial"
                   sx={{
@@ -311,14 +314,6 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
                     />
                   ))}
                 </SpeedDial>
-
-                {/*<Button*/}
-                {/*  className="text-white"*/}
-                {/*  color="success"*/}
-                {/*  onPress={onChildOpen}*/}
-                {/*>*/}
-                {/*  記録する*/}
-                {/*</Button>*/}
               </ModalFooter>
             </>
           )}

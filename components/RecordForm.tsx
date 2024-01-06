@@ -1,19 +1,15 @@
-import { FC } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import useStore from '../store'
-import { useMutateRecord } from '../hooks/useMutateRecord'
-import { useQueryMyPlants } from '../hooks/useQueryMyPlants'
 import {
   Accordion,
   AccordionItem,
   Checkbox,
   CheckboxGroup,
+  Image,
   Input,
-  Radio,
-  RadioGroup,
   Spacer,
   Textarea,
 } from '@nextui-org/react'
-import dayjs from 'dayjs'
 import { styled } from '@mui/material/styles'
 import Rating, { IconContainerProps } from '@mui/material/Rating'
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
@@ -23,6 +19,10 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
 import { Typography } from '@mui/material'
 import { WindPower } from '../types/types'
+import { ImageUploadButton } from './organisms/ImageUploadButton'
+import { uploadStorage } from '../libs/storage'
+import { supabase } from '../utils/supabase'
+import { User } from '@supabase/gotrue-js'
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -63,11 +63,44 @@ function IconContainer(props: IconContainerProps) {
   return <span {...other}>{customIcons[value].icon}</span>
 }
 export const RecordForm: FC = () => {
+  const [isUploading, setIsUploading] = useState(false)
+  const [path, setPathName] = useState<string | undefined>()
+  const [user, setUser] = useState<User>()
+  const getCurrentUser = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+    const user = session?.user
+    if (user) {
+      setUser(user)
+    }
+  }
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
   const { editedRecord } = useStore()
   const update = useStore((state) => state.updateEditedRecord)
-
+  const handleUploadStorage = async (event: ChangeEvent<HTMLInputElement>) => {
+    setIsUploading(true)
+    const fileList = event.target?.files
+    console.log(fileList)
+    if (!fileList || !fileList.length) return
+    const { path } = await uploadStorage({
+      dirName: user?.id,
+      fileList,
+      bucketName: 'record_photos',
+    })
+    if (path) {
+      const { data } = supabase.storage.from('record_photos').getPublicUrl(path)
+      setPathName(data?.publicUrl)
+      if (data) {
+        update({ ...editedRecord, photo_url: data.publicUrl })
+      }
+    }
+    setIsUploading(false)
+  }
   return (
-    <div className="mb-3">
+    <div className="mb-3 space-y-4">
       <Input
         isRequired
         label="日付"
@@ -80,7 +113,8 @@ export const RecordForm: FC = () => {
         }
       />
       <Spacer y={4} />
-      <div className="flex justify-between px-1 py-2">
+
+      <fieldset className="flex justify-between space-x-1 px-1 py-2">
         <Checkbox
           size="lg"
           classNames={{
@@ -120,7 +154,18 @@ export const RecordForm: FC = () => {
         >
           殺虫・殺菌
         </Checkbox>
-      </div>
+      </fieldset>
+
+      <Spacer y={4} />
+      <ImageUploadButton
+        onChange={handleUploadStorage}
+        isUploading={isUploading}
+      />
+      <Image
+        alt=""
+        className="border border-gray-300"
+        src={editedRecord.photo_url || path}
+      />
       <Spacer y={4} />
       <Accordion isCompact>
         <AccordionItem title="もっと詳細に記録する">

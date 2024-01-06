@@ -7,22 +7,25 @@ import {
   Spacer,
   Textarea,
 } from '@nextui-org/react'
-import { CameraAlt } from '@mui/icons-material'
 import useStore from '../../../store'
 import { uploadStorage } from '../../../libs/storage'
 import { supabase } from '../../../utils/supabase'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { User } from '@supabase/gotrue-js'
+import { ImageUploadButton } from '../../../components/organisms/ImageUploadButton'
+import { ImageInput } from '../../../components/atoms/ImageInput'
 
 export const PlantForm = () => {
   const { editedMyPlant } = useStore()
   const update = useStore((state) => state.updateEditedMyPlant)
-  const handleUploadStorage = async (folder: FileList | null) => {
+  const handleUploadStorage = async (event: ChangeEvent<HTMLInputElement>) => {
     setIsUploading(true)
-    if (!folder || !folder.length) return
+    const fileList = event.target?.files
+    console.log(fileList)
+    if (!fileList || !fileList.length) return
     const { path } = await uploadStorage({
       dirName: user?.id,
-      folder,
+      fileList,
       bucketName: 'plants_photos',
     })
     if (path) {
@@ -34,9 +37,8 @@ export const PlantForm = () => {
     }
     setIsUploading(false)
   }
-
-  const [path, setPathName] = useState<string | undefined>()
   const [isUploading, setIsUploading] = useState(false)
+  const [path, setPathName] = useState<string | undefined>()
   const [user, setUser] = useState<User>()
   const getCurrentUser = async () => {
     const {
@@ -62,26 +64,10 @@ export const PlantForm = () => {
         value={editedMyPlant.name}
         onChange={(e) => update({ ...editedMyPlant, name: e.target.value })}
       />
-      <Button
-        radius="sm"
-        color="primary"
-        as="label"
-        endContent={<CameraAlt />}
-        isLoading={isUploading}
-      >
-        画像をアップロードする
-        <Input
-          className="hidden"
-          id="file-upload"
-          name="photo_url"
-          type="file"
-          accept="image/png, image/jpeg"
-          onChange={(e) => {
-            const fileList = e.target?.files
-            handleUploadStorage(fileList)
-          }}
-        />
-      </Button>
+      <ImageUploadButton
+        onChange={handleUploadStorage}
+        isUploading={isUploading}
+      />
 
       <Image
         alt=""
