@@ -214,6 +214,7 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
         <Card isPressable onPress={onOpen}>
           <CardBody className="overflow-visible p-0">
             <Image
+              radius="none"
               as={NextImage}
               width={300}
               height={200}
