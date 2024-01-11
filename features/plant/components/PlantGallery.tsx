@@ -6,6 +6,7 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   Spacer,
   useDisclosure,
@@ -75,6 +76,8 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
         classNames={{
           base: 'bg-transparent shadow-none',
           closeButton: 'text-white hover:opacity-5',
+          backdrop:
+            'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
         }}
       >
         <ModalContent>
@@ -87,6 +90,9 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
                     arrows: false,
                     start: photoIndex,
                     lazyLoad: 'nearby',
+                  }}
+                  onMove={(next, prev, dest) => {
+                    setPhotoIndex(prev)
                   }}
                 >
                   {imageRecords?.map((record) => (
@@ -115,6 +121,9 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
                   ))}
                 </Splide>
               </ModalBody>
+              <ModalFooter className="justify-center text-white">
+                {imageRecords[photoIndex].record_date}
+              </ModalFooter>
             </>
           )}
         </ModalContent>
