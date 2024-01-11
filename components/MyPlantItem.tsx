@@ -92,43 +92,25 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const [speedDialOpen, setSpeedDialOpenOpen] = useState(false)
   const handleSpeedDialOpen = () => setSpeedDialOpenOpen(true)
   const handleSpeedDialClose = () => setSpeedDialOpenOpen(false)
-  const submitHandler = async () => {
-    await new Promise(() => {
+  const submitHandler = () => {
+    new Promise(async (resolve) => {
       setIsSubmitLoading(true)
-      console.log(isSubmitLoading)
-      if (editedRecord.id === '') {
-        createRecordMutation.mutate({
-          user_id: userId,
-          plant_id: id,
-          is_water: editedRecord.is_water,
-          is_fertilizer: editedRecord.is_fertilizer,
-          is_chemical: editedRecord.is_chemical,
-          record_date: editedRecord.record_date,
-          light_power: editedRecord.light_power,
-          weather: editedRecord.weather,
-          wind_power: editedRecord.wind_power,
-          memo: editedRecord.memo,
-          temp: editedRecord.temp,
-          condition: editedRecord.condition,
-          photo_url: editedRecord.photo_url,
-        })
-      } else {
-        updateRecordMutation.mutate({
-          id: editedRecord.id,
-          plant_id: editedRecord.plant_id,
-          is_water: editedRecord.is_water,
-          is_fertilizer: editedRecord.is_fertilizer,
-          is_chemical: editedRecord.is_chemical,
-          record_date: editedRecord.record_date,
-          light_power: editedRecord.light_power,
-          weather: editedRecord.weather,
-          wind_power: editedRecord.wind_power,
-          memo: editedRecord.memo,
-          temp: editedRecord.temp,
-          condition: editedRecord.condition,
-          photo_url: editedRecord.photo_url,
-        })
-      }
+      createRecordMutation.mutate({
+        user_id: userId,
+        plant_id: id,
+        is_water: editedRecord.is_water,
+        is_fertilizer: editedRecord.is_fertilizer,
+        is_chemical: editedRecord.is_chemical,
+        record_date: editedRecord.record_date,
+        light_power: editedRecord.light_power,
+        weather: editedRecord.weather,
+        wind_power: editedRecord.wind_power,
+        memo: editedRecord.memo,
+        temp: editedRecord.temp,
+        condition: editedRecord.condition,
+        photo_url: editedRecord.photo_url,
+      })
+      resolve(() => {})
     })
       .catch((e) => {
         console.log(e)
@@ -140,7 +122,6 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
         childOnOpenChange()
         handleSpeedDialClose()
       })
-    console.log(isSubmitLoading)
   }
 
   const deletePlant = async () => {
