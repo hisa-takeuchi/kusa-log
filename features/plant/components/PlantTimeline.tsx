@@ -54,7 +54,9 @@ const RecordIcon: FC<{ status: string }> = ({ status }) => {
 export const PlantTimeline: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
   return (
     <div>
-      {(!records || records?.length === 0) && <p>お世話記録がありません</p>}
+      {(!records || records?.length === 0) && (
+        <p className="text-sm text-theme-medium">お世話記録がありません</p>
+      )}
       <Accordion selectionMode="multiple" isCompact>
         {records?.map((record) => (
           <AccordionItem
