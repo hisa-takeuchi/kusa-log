@@ -92,12 +92,10 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const [speedDialOpen, setSpeedDialOpenOpen] = useState(false)
   const handleSpeedDialOpen = () => setSpeedDialOpenOpen(true)
   const handleSpeedDialClose = () => setSpeedDialOpenOpen(false)
-  const submitHandler = () => {
-    // 2秒止める
-    setIsSubmitLoading(true)
-
-    // TODO: promise 使用する
-    setTimeout(() => {
+  const submitHandler = async () => {
+    await new Promise(() => {
+      setIsSubmitLoading(true)
+      console.log(isSubmitLoading)
       if (editedRecord.id === '') {
         createRecordMutation.mutate({
           user_id: userId,
@@ -131,35 +129,38 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
           photo_url: editedRecord.photo_url,
         })
       }
-      setIsSubmitLoading(false)
-      setIsShowTooltip(true)
-      onOpenChange()
-      childOnOpenChange()
-      handleSpeedDialClose()
-    }, 1000)
+    })
+      .catch((e) => {
+        console.log(e)
+      })
+      .finally(() => {
+        setIsSubmitLoading(false)
+        setIsShowTooltip(true)
+        onOpenChange()
+        childOnOpenChange()
+        handleSpeedDialClose()
+      })
+    console.log(isSubmitLoading)
   }
 
   const deletePlant = async () => {
     setIsSubmitLoading(true)
     // URLからオブジェクト名を抽出
     try {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          deleteMyPlantMutation.mutate(id)
-          if (photo_url) {
-            const urlParts = new URL(photo_url)
-            const objectName = urlParts.pathname.substring(
-              '/storage/v1/object/public/plants_photos/'.length,
-            )
-            // storageから画像を削除
-            deleteStorage({
-              paths: [objectName],
-              bucketName: 'plants_photos',
-            })
-          }
-        }, 1000)
+      await new Promise(() => {
+        deleteMyPlantMutation.mutate(id)
+        if (photo_url) {
+          const urlParts = new URL(photo_url)
+          const objectName = urlParts.pathname.substring(
+            '/storage/v1/object/public/plants_photos/'.length,
+          )
+          // storageから画像を削除
+          deleteStorage({
+            paths: [objectName],
+            bucketName: 'plants_photos',
+          })
+        }
       })
-
       setIsSubmitLoading(false) // ローディング状態を解除
       handleSpeedDialClose()
       onOpenConfirmChange()
