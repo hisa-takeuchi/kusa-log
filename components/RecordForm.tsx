@@ -24,6 +24,10 @@ import { uploadStorage } from '../libs/storage'
 import { supabase } from '../utils/supabase'
 import { User } from '@supabase/gotrue-js'
 
+interface Props {
+  handleUploading: (isUploading: boolean) => void
+}
+
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
     color: theme.palette.action.disabled,
@@ -62,8 +66,8 @@ function IconContainer(props: IconContainerProps) {
   const { value, ...other } = props
   return <span {...other}>{customIcons[value].icon}</span>
 }
-export const RecordForm: FC = () => {
-  const [isUploading, setIsUploading] = useState(false)
+export const RecordForm: FC<Props> = ({ handleUploading }) => {
+  const [isUploading, setIsUploading] = useState<boolean>(false)
   const [path, setPathName] = useState<string | undefined>()
   const [user, setUser] = useState<User>()
   const getCurrentUser = async () => {
@@ -80,8 +84,9 @@ export const RecordForm: FC = () => {
   }, [])
   const { editedRecord } = useStore()
   const update = useStore((state) => state.updateEditedRecord)
+
   const handleUploadStorage = async (event: ChangeEvent<HTMLInputElement>) => {
-    setIsUploading(true)
+    handleUploading(true)
     const fileList = event.target?.files
     console.log(fileList)
     if (!fileList || !fileList.length) return
@@ -97,8 +102,9 @@ export const RecordForm: FC = () => {
         update({ ...editedRecord, photo_url: data.publicUrl })
       }
     }
-    setIsUploading(false)
+    handleUploading(false)
   }
+
   return (
     <div className="mb-3 space-y-4">
       <Input
@@ -108,9 +114,9 @@ export const RecordForm: FC = () => {
         placeholder="Enter your email"
         variant="bordered"
         defaultValue={editedRecord.record_date}
-        onChange={(e) =>
+        onChange={(e) => {
           update({ ...editedRecord, record_date: e.target.value })
-        }
+        }}
       />
       <Spacer y={4} />
 

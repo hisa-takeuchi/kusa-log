@@ -50,7 +50,7 @@ export const PlantGallery: FC<Pick<MyPlant, 'records'>> = ({ records }) => {
                     'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
                     'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
                 }}
-                title={record.record_date}
+                subtitle={record.record_date}
                 position="top"
                 classes={{ title: 'text-xs' }}
                 className="z-10"
