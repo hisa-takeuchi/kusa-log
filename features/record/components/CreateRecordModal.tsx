@@ -21,7 +21,6 @@ interface Props {
 export const CreateRecordModal: FC<Props> = ({ isOpen, onOpenChange }) => {
   const { editedRecord, resetEditedRecord } = useStore()
   const { editedMyPlant } = useStore()
-  console.log(editedMyPlant)
   const { createRecordMutation } = useMutateRecord()
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false)
   const [isUploading, setIsUploading] = useState<boolean>(false)

@@ -1,5 +1,5 @@
 import { MyPlant } from '../../../types/types'
-import { FC, SyntheticEvent, useEffect, useState } from 'react'
+import { FC, SyntheticEvent, useMemo, useState } from 'react'
 import {
   Alert,
   Box,
@@ -33,11 +33,10 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
     records,
   } = props
 
-  const [diffDate, setDiffDate] = useState(0)
   const [tabValue, setTabValue] = useState(0)
   const waterRecords = records?.filter((record) => record.is_water)
 
-  const getDiffDate = () => {
+  const diffDate = useMemo(() => {
     if (!waterRecords || waterRecords.length === 0) return
 
     const lastRecordDateStr = waterRecords[0].record_date
@@ -47,10 +46,8 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
 
     const diff = today.getTime() - lastRecordDate.getTime()
 
-    const date = Math.floor(Math.abs(diff) / (24 * 60 * 60 * 1000))
-
-    setDiffDate(date)
-  }
+    return Math.floor(Math.abs(diff) / (24 * 60 * 60 * 1000))
+  }, [waterRecords])
 
   const handleTabChange = (_: SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
@@ -62,10 +59,6 @@ export const ShowPlant: FC<Omit<MyPlant, 'created_at'>> = (props) => {
       'aria-controls': `plant-tabpanel-${index}`,
     }
   }
-
-  useEffect(() => {
-    getDiffDate()
-  }, [])
 
   return (
     <div>

@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useMemo } from 'react'
 import { MyPlant } from '../../../types/types'
-import { Box, Card, CardContent, CardMedia } from '@mui/material'
+import { Box, Card, CardContent } from '@mui/material'
 import { Image, Spacer } from '@nextui-org/react'
 import { FormatDate } from '../../../utils/formatDate'
 import { CalcTimeInterval } from '../../../utils/calcTimeInterval'
@@ -17,10 +17,7 @@ export const PlantInfoCard: FC<
     | 'records'
   >
 > = ({ photo_url, soil_info, buy_at, replanted_date, cut_date, records }) => {
-  const [wateringInterval, setWateringInterval] = useState<number | null>(null)
-  useEffect(() => {
-    setWateringInterval(CalcTimeInterval(records))
-  }, [])
+  const wateringInterval = useMemo(() => CalcTimeInterval(records), [records])
 
   return (
     <>
