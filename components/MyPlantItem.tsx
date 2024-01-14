@@ -32,6 +32,7 @@ import { MdOutlineClose } from 'react-icons/md'
 import { TbCalendarPlus, TbEdit, TbTrash } from 'react-icons/tb'
 import { EditMyPlantModal } from '../features/plant/components/EditMyPlantModal'
 import { CreateRecordModal } from '../features/record/components/CreateRecordModal'
+import { SpeedDialMenu } from './organisms/SpeedDialMenu'
 
 export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
   const { id, name, photo_url } = props
@@ -161,75 +162,16 @@ export const MyPlantItem: FC<Omit<MyPlant, 'created_at'>> = (props) => {
                 {name}
               </ModalHeader>
               <ModalBody>
-                {/*<RecordForm />*/}
                 <ShowPlant {...props} />
               </ModalBody>
               <ModalFooter>
                 <Backdrop sx={{ 'z-index': 50 }} open={speedDialOpen} />
-                <SpeedDial
-                  ariaLabel="Plant SpeedDial"
-                  sx={{
-                    position: 'absolute',
-                    bottom: 16,
-                    right: 16,
-                  }}
-                  FabProps={{
-                    color: 'success',
-                  }}
-                  icon={
-                    <SpeedDialIcon
-                      classes={{
-                        root: '!h-fit',
-                      }}
-                      icon={
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <PiPottedPlantFill size="1.2rem" />
-                          <Typography fontSize={9}>記録</Typography>
-                        </Box>
-                      }
-                      openIcon={
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            width: '100%',
-                            left: '2%',
-                          }}
-                        >
-                          <MdOutlineClose size="1.5rem" />
-                          <Typography fontSize={9}>閉じる</Typography>
-                        </Box>
-                      }
-                    />
-                  }
-                  onClose={handleSpeedDialClose}
-                  onOpen={handleSpeedDialOpen}
+                <SpeedDialMenu
+                  actions={actions}
                   open={speedDialOpen}
-                >
-                  {actions.map((action) => (
-                    <SpeedDialAction
-                      key={action.name}
-                      icon={action.icon}
-                      tooltipTitle={action.name}
-                      tooltipOpen
-                      TooltipClasses={{
-                        tooltip: 'text-xl',
-                      }}
-                      onClick={action.func}
-                      classes={{
-                        staticTooltipLabel:
-                          '!text-lg !font-medium !text-white !bg-transparent !shadow-none',
-                      }}
-                    />
-                  ))}
-                </SpeedDial>
+                  onOpen={handleSpeedDialOpen}
+                  onClose={handleSpeedDialClose}
+                />
               </ModalFooter>
             </>
           )}
