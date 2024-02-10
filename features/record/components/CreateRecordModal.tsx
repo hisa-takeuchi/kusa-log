@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -18,7 +18,8 @@ interface Props {
   onOpenChange: () => void
 }
 
-export const CreateRecordModal: FC<Props> = ({ isOpen, onOpenChange }) => {
+export const CreateRecordModal: FC<Props> = memo(({ isOpen, onOpenChange }) => {
+  console.log('CreateRecordModal の再レンダリング')
   const { editedRecord, resetEditedRecord } = useStore()
   const { editedMyPlant } = useStore()
   const { createRecordMutation } = useMutateRecord()
@@ -102,4 +103,6 @@ export const CreateRecordModal: FC<Props> = ({ isOpen, onOpenChange }) => {
       </ModalContent>
     </Modal>
   )
-}
+})
+
+CreateRecordModal.displayName = 'CreateRecordModal'

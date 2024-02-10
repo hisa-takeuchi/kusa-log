@@ -9,14 +9,15 @@ import {
   ModalHeader,
 } from '@nextui-org/react'
 import { PlantForm } from './PlantForm'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 interface EditModalProps {
   isOpen: boolean
   onOpenChange: () => void
 }
 
-export const EditMyPlantModal = (props: EditModalProps) => {
+export const EditMyPlantModal = memo((props: EditModalProps) => {
+  console.log('EditeMyPlantModal の再レンダリング')
   const { isOpen, onOpenChange } = props
   const { editedMyPlant } = useStore()
   const { updateMyPlantMutation } = useMutateMyPlants()
@@ -75,4 +76,6 @@ export const EditMyPlantModal = (props: EditModalProps) => {
       </Modal>
     </>
   )
-}
+})
+
+EditMyPlantModal.displayName = 'EditMyPlantModal'
